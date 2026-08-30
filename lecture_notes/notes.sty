@@ -1,0 +1,135 @@
+% notes.sty
+% Shared style for the "PHYS-E0510 - Advanced Computational Methods in Physics D" lecture notes.
+% One session = one standalone .tex file that \usepackage{notes}.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{notes}[2026/01/01 lecture notes style]
+
+\RequirePackage[margin=2.7cm]{geometry}
+\RequirePackage{amsmath,amssymb,amsthm}
+\RequirePackage{physics}
+\RequirePackage{braket}
+\RequirePackage{enumitem}
+\RequirePackage{xcolor}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,breakable,listings}
+\RequirePackage{booktabs}
+\RequirePackage{array,ragged2e}
+\RequirePackage{graphicx}
+\RequirePackage{float}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\captionsetup[sub]{font=small,labelfont=bf}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+\RequirePackage{pifont}
+\RequirePackage{listings}
+\RequirePackage[colorlinks=true,linkcolor=violet,citecolor=violet,urlcolor=violet]{hyperref}
+\RequirePackage{etoolbox}
+
+% ---------- typography ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5\baselineskip}
+
+\definecolor{coursedark}{HTML}{1B2A4A}
+\definecolor{courseaccent}{HTML}{7A2E8C}
+
+\titleformat{\section}{\Large\bfseries\color{coursedark}\raggedright}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{coursedark}\raggedright}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.6em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.4em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\itshape\notesessiontitle}
+\fancyhead[R]{\small PHYS-E0510}
+\fancyfoot[C]{\thepage}
+
+\newcommand{\notesessiontitle}{}
+\newcommand{\sessiontitle}[1]{\renewcommand{\notesessiontitle}{#1}}
+
+% ---------- title block ----------
+% Usage: \notestitle{Session N}{Title}{notebook-file.ipynb}{one-line prerequisite note}
+\newcommand{\notestitle}[4]{%
+  \sessiontitle{#2}%
+  \begin{center}
+    {\color{coursedark}\Large\bfseries PHYS-E0510 -- Advanced Computational Methods in Physics D}\\[0.3em]
+    {\color{courseaccent}\large #1: #2}\\[0.6em]
+  \end{center}
+  \begin{tcolorbox}[
+      colback=coursedark!5, colframe=coursedark!60, boxrule=0.4pt,
+      arc=1mm, left=6pt, right=6pt, top=4pt, bottom=4pt
+    ]
+    \small
+    \textbf{Companion notebook:} \texttt{#3} \quad\textbf{Prerequisites:} #4
+  \end{tcolorbox}
+  \vspace{0.4em}
+}
+
+% ---------- "try it in the notebook" callout ----------
+\newtcolorbox{notebook}[1][]{%
+  breakable, colback=courseaccent!5, colframe=courseaccent!70,
+  boxrule=0.5pt, arc=1mm, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fonttitle=\bfseries\small, coltitle=courseaccent,
+  title={\raisebox{-0.1em}{\ding{56}}~Computational companion #1},
+  fontupper=\small
+}
+
+% ---------- code snippets (pyqula / dmrgpy) ----------
+\lstdefinestyle{pycode}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{courseaccent}\bfseries,
+  commentstyle=\color{black!45}\itshape,
+  stringstyle=\color{coursedark},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4,
+  frame=none,
+  xleftmargin=0pt,
+  aboveskip=2pt,
+  belowskip=2pt,
+}
+% Usage: \begin{pysnippet}{dmrgpy} ... \end{pysnippet} (or {pyqula})
+% Optional first arg names the equation this snippet implements, e.g.
+% \begin{pysnippet}[eq:heisenberg-h]{dmrgpy} ... \end{pysnippet}
+\newtcblisting{pysnippet}[2][]{
+  listing only, listing options={style=pycode},
+  breakable, colback=coursedark!4, colframe=coursedark!55, boxrule=0.4pt,
+  arc=1mm, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  fonttitle=\bfseries\footnotesize, coltitle=coursedark,
+  title={Code in \texttt{#2}\ifblank{#1}{}{ (\eqref{#1})}}
+}
+
+% ---------- analytic derivation callout (extended notes only) ----------
+% Marks derivations that go beyond what the short notes state, i.e. content
+% carried through in full only in the extended version.
+% Usage: \begin{analytics} ... \end{analytics}
+% Optional first arg names the equation this derivation arrives at, e.g.
+% \begin{analytics}[eq:manybodygap]. .. \end{analytics}
+\definecolor{analyticaccent}{HTML}{8C5A1B}
+\newtcolorbox{analytics}[1][]{
+  breakable, colback=analyticaccent!5, colframe=analyticaccent!65,
+  boxrule=0.4pt, arc=1mm, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fonttitle=\bfseries\footnotesize, coltitle=analyticaccent,
+  title={Some analytics\ifblank{#1}{}{ (\eqref{#1})}}
+}
+
+% ---------- physics macros ----------
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\HMF}{\mathcal{H}_{\mathrm{MF}}}
+\newcommand{\up}{\uparrow}
+\newcommand{\dn}{\downarrow}
+\newcommand{\cre}[1]{c^{\dagger}_{#1}}
+\newcommand{\ann}[1]{c^{\phantom{\dagger}}_{#1}}
+\newcommand{\creS}[1]{S^{#1}}
+\newcommand{\vac}{\ket{\Omega}}
+\newcommand{\Order}[1]{\mathcal{O}\!\left(#1\right)}
+
+\endinput

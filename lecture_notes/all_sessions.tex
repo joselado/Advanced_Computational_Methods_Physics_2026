@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage{notes}
+\usepackage{subfiles}
+
+\begin{document}
+
+% ---------- course title page ----------
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\Huge\bfseries\color{coursedark} PHYS-E0510 -- Advanced Computational Methods in Physics D\par}
+\vspace{0.8cm}
+{\Large\color{courseaccent} Lecture Notes\par}
+\vspace{0.3cm}
+{\large Sessions 1--5\par}
+\vspace{2cm}
+{\large Jose Lado\par}
+\vspace{0.5cm}
+{\large Department of Applied Physics, School of Science\\Aalto University, Finland\par}
+\vspace{0.5cm}
+{\large 2026\par}
+\vfill
+{\small Each session's title box below names its companion Jupyter notebook and
+prerequisites.\par}
+\end{titlepage}
+
+\section*{How this course is organized}
+\addcontentsline{toc}{section}{\textbf{How this course is organized}}
+
+Every topic in this course comes to you in four different forms, and they are meant to be used
+together rather than as substitutes for one another.
+
+\begin{itemize}[nosep]
+  \item \textbf{Recordings.} Each session is recorded; this is the lecture itself, delivered
+    live, with all the informal asides, questions, and derivations on the fly that never quite
+    make it into a written document.
+  \item \textbf{Slides.} The slide deck for each session is the visual backbone of the lecture:
+    the sequence of definitions, figures, and equations in the order they were actually
+    presented. Use it to navigate a recording or to jog your memory before an exam.
+  \item \textbf{Lecture notes.} What you are reading now. The notes follow the same session
+    structure as the recordings and slides, but write out the physics in full, connected
+    prose, with every derivation carried through by hand rather than compressed onto a slide.
+    Read them either instead of watching a session again, or alongside the slides to fill in the
+    steps a bullet point necessarily skips.
+  \item \textbf{Jupyter notebooks.} Every computational session has a companion notebook,
+    referenced in the title box at the start of each session below and flagged again wherever a
+    \emph{Computational companion} box appears in the margin. This is where the physics actually
+    gets computed: nothing here is a canned figure, you are meant to run the cells yourself,
+    change parameters, and watch what happens.
+\end{itemize}
+
+None of these four are complete on their own. The recordings and slides give you the narrative
+and the intuition; the lecture notes give you the derivations you can check line by line; the
+notebooks give you the numerics to build intuition none of the others can give you by
+themselves. A good way to work through a session is to watch the recording once, read the
+matching notes with the notebook open alongside it, and then go back and tinker with the
+notebook until the results stop feeling like something that just happened on someone else's
+screen.
+
+\subsection*{The computational libraries}
+
+All of the numerics in this course are delegated to two Python libraries written and maintained
+by the instructor, rather than to code written from scratch inside the notebooks. Both need to be
+installed separately before the notebooks will run; see the notebooks' first cell for the exact
+environment variables they expect.
+
+\begin{itemize}[nosep]
+  \item \textbf{\texttt{pyqula}} (\url{https://github.com/joselado/pyqula}) handles
+    single-particle and mean-field electronic structure: tight-binding Hamiltonians, band
+    structures, and the self-consistent Hubbard/CDW calculations of Session 1. It is what
+    \texttt{classical\_magnetism.ipynb} is built on.
+  \item \textbf{\texttt{dmrgpy}} (\url{https://github.com/joselado/dmrgpy}) handles everything
+    many-body: exact diagonalization of spin and fermionic Hamiltonians, and the matrix-product-state
+    and DMRG calculations of the later sessions. It is what the quantum-magnetism,
+    interacting-fermion, and MPS notebooks are built on.
+\end{itemize}
+
+Both libraries are used purely as tools here: you are not expected to read their source to follow
+this course, only to call the functions the notebooks show you. If you do want to look under the
+hood, the reference documentation collected for this course is a good place to start.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\phantomsection\addcontentsline{toc}{section}{\textbf{Session 1: Classical Magnetism and Mean-Field Theory}}
+\subfile{classical_magnetism}
+
+\clearpage
+
+\phantomsection\addcontentsline{toc}{section}{\textbf{Session 2: Exact Diagonalization of the Heisenberg Spin Chain}}
+\subfile{quantum_magnetism}
+
+\clearpage
+
+\phantomsection\addcontentsline{toc}{section}{\textbf{Session 3: Exact Diagonalization in the Fermionic Basis}}
+\subfile{many_body_fermions}
+
+\clearpage
+
+\phantomsection\addcontentsline{toc}{section}{\textbf{Session 4: Matrix Product States for Spin Chains}}
+\subfile{mps_spin_chains}
+
+\clearpage
+
+\phantomsection\addcontentsline{toc}{section}{\textbf{Session 5: Matrix Product States for Fermionic Models}}
+\subfile{mps_fermionic}
+
+\end{document}

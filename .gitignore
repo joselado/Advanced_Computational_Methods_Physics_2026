@@ -1,0 +1,26 @@
+# Disposable dmrgpy/pyqula solver scratch directories
+.mpsfolder
+.pychainfolder
+*.OUT
+*.pkl
+
+# Jupyter
+.ipynb_checkpoints
+
+# Slide editing sources. The .odp decks live here next to their exported PDFs, but
+# only the PDFs are published: the sources are multi-MB binaries that would bloat
+# history on every re-save.
+*.odp
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.listing
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
+# OS cruft
+.DS_Store
