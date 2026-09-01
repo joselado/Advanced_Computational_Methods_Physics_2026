@@ -32,11 +32,19 @@ Short lecture notes for each session, plus a single combined document covering a
 - [Session 4: Tensor networks for many-body quantum magnets](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/mps_spin_chains.pdf)
 - [Session 5: Tensor networks for many-body correlated fermionic systems](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/mps_fermionic.pdf)
 
-The notes are written in LaTeX; each session's source sits next to its PDF in `lecture_notes`, and
-the combined document pulls them in as subfiles. Build any of them with
+The notes are written in LaTeX. The sources live in `lecture_notes/src` (one `.tex` per session,
+the shared `notes.sty`, and the `figures` used by all of them); the combined document pulls the
+sessions in as subfiles. The compiled PDFs are published one level up, in `lecture_notes`. Rebuild
+all six with
 
 ```bash
-cd lecture_notes && latexmk -pdf all_sessions.tex
+cd lecture_notes/src && make
+```
+
+or build a single document by hand, moving its PDF up afterwards:
+
+```bash
+cd lecture_notes/src && latexmk -pdf all_sessions.tex && mv all_sessions.pdf ..
 ```
 
 ## Jupyter notebooks
