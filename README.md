@@ -25,10 +25,10 @@ Check the link of each library to know how to install it
 ## Lecture notes
 A single document covering all five sessions
 
-- [Lecture notes, all sessions](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/all_sessions.pdf)
+- [Lecture notes, all sessions](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/lecture_notes.pdf)
 
 The notes are written in LaTeX. The sources live in `lecture_notes/src` (one `.tex` per session,
-the shared `notes.sty`, and the `figures` used by all of them); `all_sessions.tex` pulls the
+the shared `notes.sty`, and the `figures` used by all of them); `lecture_notes.tex` pulls the
 sessions in as subfiles. The compiled PDF is published one level up, in `lecture_notes`. Rebuild
 it with
 
