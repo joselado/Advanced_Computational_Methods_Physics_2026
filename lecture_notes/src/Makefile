@@ -1,26 +1,24 @@
 # Lecture notes build.
 #
-# Sources live here in src/; the compiled PDFs are published one level up, in
-# lecture_notes/, which is where the README links point.
+# Sources live here in src/; the single compiled document, all_sessions.pdf, is
+# published one level up, in lecture_notes/, which is where the README links point.
 
-DOCS = all_sessions classical_magnetism quantum_magnetism many_body_fermions \
-       mps_spin_chains mps_fermionic
+MAIN = all_sessions
+
+SESSIONS = classical_magnetism quantum_magnetism many_body_fermions \
+           mps_spin_chains mps_fermionic
 
 OUT = ..
 
-PDFS = $(addprefix $(OUT)/,$(addsuffix .pdf,$(DOCS)))
-
 .PHONY: all clean
 
-all: $(PDFS)
-
-$(OUT)/%.pdf: %.tex notes.sty
-	latexmk -pdf -interaction=nonstopmode $<
-	mv $*.pdf $(OUT)/
+all: $(OUT)/$(MAIN).pdf
 
 # The combined document pulls the sessions in as subfiles, so it goes stale
 # whenever any of them changes.
-$(OUT)/all_sessions.pdf: $(addsuffix .tex,$(DOCS))
+$(OUT)/$(MAIN).pdf: $(MAIN).tex $(addsuffix .tex,$(SESSIONS)) notes.sty
+	latexmk -pdf -interaction=nonstopmode $(MAIN).tex
+	mv $(MAIN).pdf $(OUT)/
 
 clean:
-	latexmk -C $(addsuffix .tex,$(DOCS))
+	latexmk -C $(addsuffix .tex,$(MAIN) $(SESSIONS))

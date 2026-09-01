@@ -23,28 +23,17 @@ Check the link of each library to know how to install it
 - [Machine learning for quantum states](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/slides/machine_learning_quantum.pdf) (slides only, no notebook or lecture notes)
 
 ## Lecture notes
-Short lecture notes for each session, plus a single combined document covering all five
+A single document covering all five sessions
 
-- [All sessions (combined)](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/all_sessions.pdf)
-- [Session 1: Many-body interactions and classical symmetry broken magnetism](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/classical_magnetism.pdf)
-- [Session 2: Many-body quantum magnets](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/quantum_magnetism.pdf)
-- [Session 3: Many-body correlated fermionic systems](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/many_body_fermions.pdf)
-- [Session 4: Tensor networks for many-body quantum magnets](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/mps_spin_chains.pdf)
-- [Session 5: Tensor networks for many-body correlated fermionic systems](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/mps_fermionic.pdf)
+- [Lecture notes, all sessions](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/lecture_notes/all_sessions.pdf)
 
 The notes are written in LaTeX. The sources live in `lecture_notes/src` (one `.tex` per session,
-the shared `notes.sty`, and the `figures` used by all of them); the combined document pulls the
-sessions in as subfiles. The compiled PDFs are published one level up, in `lecture_notes`. Rebuild
-all six with
+the shared `notes.sty`, and the `figures` used by all of them); `all_sessions.tex` pulls the
+sessions in as subfiles. The compiled PDF is published one level up, in `lecture_notes`. Rebuild
+it with
 
 ```bash
 cd lecture_notes/src && make
-```
-
-or build a single document by hand, moving its PDF up afterwards:
-
-```bash
-cd lecture_notes/src && latexmk -pdf all_sessions.tex && mv all_sessions.pdf ..
 ```
 
 ## Jupyter notebooks
