@@ -44,7 +44,7 @@ Each link opens the film in a player on [one page](https://joselado.github.io/Ad
 - [Film 2.1: A classical and a quantum magnet](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_1_classical_quantum_magnet)
 - [Film 2.2: Exact diagonalization](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_2_exact_diagonalization)
 - [Film 2.3: A magnetic field as a probe](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_3_magnetic_field_probe)
-- [Film 2.4: Gapped or gapless](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_4_gapped_or_gapless)
+- [Film 2.4: Gapped or gapless?](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_4_gapped_or_gapless)
 - [Film 3.1: A charge density wave, exactly](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_1_charge_density_wave)
 - [Film 3.2: The chemical potential as a gate](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_2_chemical_potential_gate)
 - [Film 3.3: The exact Hubbard magnetization is zero](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_3_hubbard_magnetization)
