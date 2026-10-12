@@ -47,7 +47,7 @@ Each link opens the film in a player on [one page](https://joselado.github.io/Ad
 - [Film 2.4: Gapped or gapless?](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s2_4_gapped_or_gapless)
 - [Film 3.1: Charge order in the many-body spectrum](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_1_charge_density_wave)
 - [Film 3.2: The chemical potential as a gate](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_2_chemical_potential_gate)
-- [Film 3.3: The exact Hubbard magnetization is zero](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_3_hubbard_magnetization)
+- [Film 3.3: Is the Hubbard chain magnetic?](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_3_hubbard_magnetization)
 - [Film 3.4: Spin-charge separation](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_4_spin_charge_separation)
 - [Film 4.1: Compressing the wavefunction: matrix product states](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_1_matrix_product_states)
 - [Film 4.2: Entanglement and the area law](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_2_entanglement_area_law)
