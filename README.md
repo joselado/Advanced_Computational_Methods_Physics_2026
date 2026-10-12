@@ -51,7 +51,7 @@ Each link opens the film in a player on [one page](https://joselado.github.io/Ad
 - [Film 3.4: Spin-charge separation](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s3_4_spin_charge_separation)
 - [Film 4.1: Matrix product states](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_1_matrix_product_states)
 - [Film 4.2: Entanglement and the area law](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_2_entanglement_area_law)
-- [Film 4.3: Entanglement finds the phase transition](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_3_entanglement_phase_transition)
+- [Film 4.3: Entanglement at a phase transition](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_3_entanglement_phase_transition)
 - [Film 4.4: Fractionalization: the spin-1 chain](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s4_4_spin1_fractionalization)
 - [Film 5.1: Fermions as spins: the Jordan-Wigner string](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_1_jordan_wigner)
 - [Film 5.2: A charge density wave at a hundred sites](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_2_cdw_hundred_sites)
