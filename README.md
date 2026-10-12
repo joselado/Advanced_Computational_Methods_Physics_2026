@@ -33,7 +33,7 @@ Check the link of each library to know how to install it
 - [Session 5: Tensor networks for many-body correlated fermionic systems](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/jupyter-notebooks/mps_many_body_fermionic.ipynb)
 
 ## Exercise shorts
-Short silent films with captions, one to two minutes each and four per session, each telling one idea of the session; every number on screen is computed with the same codes as the notebooks
+Short silent films with captions, four per session, where in one to two minutes we see one idea of the session, with every number on screen computed with the same codes as the notebooks
 
 - [Film 1.1: The exponential wall](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/exercise_shorts/s1_1_exponential_wall.mp4)
 - [Film 1.2: Superexchange: from electrons to spins](https://github.com/joselado/Advanced_Computational_Methods_Physics_2026/blob/main/exercise_shorts/s1_2_superexchange.mp4)
