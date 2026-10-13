@@ -1,0 +1,35 @@
+% Figure 2.5 (Session 2): the Abrikosov fermions, the bond operator and the spinon band.
+% The image is rendered by figures/blender/s2_5_abrikosov.py; the coordinates of the labels
+% come from figures/blender/out/abrikosov_anchors.tex. Compile with:
+%   pdflatex abrikosov.tex ; result moves to ../quantum_magnetism/abrikosov.pdf
+\documentclass[11pt,tikz,border=0pt]{standalone}
+\usepackage{amsmath,amssymb,graphicx,braket,bm}\newcommand{\vb}[1]{\bm{#1}}
+\usepackage{xcolor}
+\definecolor{coursedark}{HTML}{1B2A4A}
+\definecolor{costamber}{HTML}{B8620A}
+\newlength{\figw}\setlength{\figw}{16.19cm}   % the text width of the notes (letter, 2.7 cm margins), so labels print at size
+\newcommand{\up}{\uparrow}\newcommand{\dn}{\downarrow}
+
+\begin{document}
+\begin{tikzpicture}[lbl/.style={font=\small, text=coursedark}, gh/.style={font=\small, text=coursedark!45}]
+  \node[anchor=south west, inner sep=0pt] at (0,0)
+    {\includegraphics[width=\figw]{../blender/out/abrikosov.jpg}};
+  \input{../blender/out/abrikosov_anchors.tex}
+  \node[lbl, font=\normalsize, anchor=west] at (a) {(a)};
+  \node[lbl, font=\normalsize, anchor=west] at (b) {(b)};
+  \node[lbl, font=\normalsize, anchor=west] at (c) {(c)};
+  \node[gh, anchor=east] at (k0) {$\ket{0}$};
+  \node[gh, anchor=west] at (k3) {$\ket{\up\dn}$};
+  \node[lbl, anchor=east] at (k1) {$\ket{\up}$};
+  \node[lbl, anchor=west] at (k2) {$\ket{\dn}$};
+  \node[lbl, anchor=north] at (labA) {$\sum_\sigma f^\dagger_{i\sigma}f_{i\sigma}=1$};
+  \node[lbl, anchor=south] at (J) {$J\,\vb{S}_i\cdot\vb{S}_j$};
+  \node[lbl, anchor=west] at (chi) {$\chi_{ij}^\dagger\chi_{ij}$};
+  \node[lbl, anchor=north] at (labB) {the same bond, in fermions};
+  \node[lbl, anchor=north west, inner sep=2pt] at (kF) {$k_F$};
+  \node[lbl, anchor=north east, inner sep=2pt] at (mkF) {$-k_F$};
+  \node[lbl, anchor=south] at (eps) {$\varepsilon(k)$};
+  \node[lbl, anchor=west] at (kend) {$k$};
+  \node[lbl, anchor=north] at (labC) {spinon band, filled up to $\pm k_F=\pm\pi/2$};
+\end{tikzpicture}
+\end{document}

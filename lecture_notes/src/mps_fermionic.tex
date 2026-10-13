@@ -66,19 +66,9 @@ $\ann{}\leftrightarrow S^-$, and, since $n=\cre{}\ann{}$ is $0$ or $1$ while $S^
 So far this looks like a clean bijection between the two Hilbert spaces. But notice the sentence we
 just glossed over: fermionic operators on different sites \emph{anticommute}, while spin operators
 on different sites \emph{commute}. That mismatch is not a technicality, it means the naive
-identification $S_i^+\stackrel{?}{=}\cre{i}$ cannot possibly be right as it stands.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.80\textwidth]{figures/mps_fermionic/jw_hilbert_space.pdf}
-  \caption{The local Hilbert spaces matched at the start of the Jordan-Wigner construction. A
-    spinless fermionic site is either empty or occupied, and a spin-$\tfrac12$ site points either
-    down or up, so the identification $\ket{0}\leftrightarrow\ket{\dn}$,
-    $\ket{1}\leftrightarrow\ket{\up}$ is a clean bijection site by site. What the picture cannot
-    show is the mismatch the rest of this section exists to repair: operators on different
-    fermionic sites anticommute, while spin operators on different sites commute.}
-  \label{fig:jw-local}
-\end{figure}
+identification $S_i^+\stackrel{?}{=}\cre{i}$ cannot possibly be right as it stands. Panel (a) of
+Figure~\ref{fig:jw-string} draws the matching of the two local spaces, and the other two panels the
+repair we will now construct.
 
 \subsection{The string operator}
 Let us see the mismatch explicitly, since it is the whole reason this section exists. Take the naive
@@ -144,14 +134,20 @@ guaranteeing consistency, but never entering the actual Hamiltonian we hand to t
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.90\textwidth]{figures/jw_string.pdf}
-  \caption{The Jordan-Wigner string, and why it usually vanishes from sight. (a) The dictionary of
-    Eq.~\eqref{eq:jw} attaches to $\cre{i}$ the parity factor $K_i=\prod_{j<i}(1-2n_j)$, one factor
-    for every site to the left of $i$, shaded here. That trailing string is what repairs the
-    mismatch between anticommuting fermions and commuting spins. (b) On a nearest-neighbor bond the
-    product in Eq.~\eqref{eq:jwstring} runs over the empty range $i<k<i+1$, so the string collapses
-    to $1$ and the spin bilinear reduces to the bare hopping. This is why the models we build
-    matrix product state Hamiltonians for never meet the string explicitly.}
+  \includegraphics[width=\textwidth]{figures/mps_fermionic/jw_string.pdf}
+  \caption{The Jordan-Wigner string, and why it usually vanishes from sight. (a) The local Hilbert
+    spaces matched site by site: a spinless fermionic site, behind, is either empty or occupied, and
+    a spin-$\tfrac12$, in front, points either down or up, so $\ket{0}\leftrightarrow\ket{\dn}$ and
+    $\ket{1}\leftrightarrow\ket{\up}$ is a clean bijection. What the picture cannot show is the
+    mismatch the rest of the section repairs: operators on different fermionic sites anticommute,
+    while spin operators on different sites commute. (b) The dictionary of Eq.~\eqref{eq:jw} attaches
+    to $\cre{i}$, which puts an electron on the ghosted site, the parity factor
+    $K_i=\prod_{j<i}(1-2n_j)$: every site to the left of $i$, shaded, contributes $-1$ if it is
+    occupied and $+1$ if it is empty, so for the three electrons to its left $K_i=-1$. That trailing string
+    is what repairs the mismatch. (c) On a nearest-neighbor bond the product in
+    Eq.~\eqref{eq:jwstring} runs over the empty range $i<k<i+1$, so the string is $1$ and the spin
+    bilinear reduces to the bare hop of the electron from $i+1$ to $i$. This is why the models we
+    build matrix product state Hamiltonians for never meet the string explicitly.}
   \label{fig:jw-string}
 \end{figure}
 
@@ -212,7 +208,9 @@ but it is a boundary effect that does not affect the bulk transition, so we drop
 This is exactly the \textbf{XXZ chain} with anisotropy $\Delta \equiv V/(2t)$. Its exact
 Bethe-ansatz solution places the transition between a gapless, easy-plane phase and a gapped,
 N\'eel-ordered phase precisely at the isotropic Heisenberg point $\Delta=1$, i.e.\ at $V=2t$. Keep
-that number in mind, we are about to rediscover it numerically.
+that number in mind, we are about to rediscover it numerically. Panel (a) of Figure~\ref{fig:xxz-pinning} draws the
+dictionary on a single bond: the hop of an electron is the flip-flop of an up and a down spin, and
+two neighboring electrons are two neighboring up spins.
 
 \subsection{Charge order from a pinning field}
 Because a translationally invariant Hamiltonian cannot spontaneously break translational symmetry
@@ -229,7 +227,25 @@ story is completely different: the charge does oscillate near the pinned edge, b
 the oscillation decays as you move into the bulk, and by the middle of the chain the density has
 relaxed back to the uniform value $\expval{n_i}=\tfrac12$. The bulk, in other words, actively wants
 to screen out the perturbation, which is exactly the signature of a phase that does \emph{not} break
-translational symmetry, even though $V=t$ is a sizeable interaction by any measure.
+translational symmetry, even though $V=t$ is a sizeable interaction by any measure. Panel (b) of
+Figure~\ref{fig:xxz-pinning} shows the two profiles side by side.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/mps_fermionic/xxz_pinning.pdf}
+  \caption{The spinless chain as the XXZ chain, and charge order from a pinning field. (a) The
+    dictionary of Eq.~\eqref{eq:xxzferm} on one bond, fermions behind and spins in front: the hop
+    of an electron from $i+1$ to $i$ is the flip-flop $S^+_iS^-_{i+1}$, the ghosts marking where the
+    electron and the up spin end up, and the repulsion of two
+    neighboring electrons, the energy cost in amber, is the Ising term $VS^z_iS^z_{i+1}$ together
+    with the uniform field that we drop at fixed filling. (b) The density $\expval{n_i}$ on the
+    first $24$ of the $L=100$ sites, as columns whose height is the density, computed with the
+    density matrix renormalization group at $\chi=20$ and the pinning $m(n_1-n_L)$, $m=0.1t$, of the
+    notebook, starting the sweeps from the charge pattern the pinning favors. For $V=t$, behind, the pinned edge leaves an oscillation of a few percent that dies out
+    into the bulk, meaning that the bulk screens the seed, while for $V=40t$, in front, every site is
+    full or empty from the edge on, meaning that the bulk amplifies it.}
+  \label{fig:xxz-pinning}
+\end{figure}
 
 \begin{notebook}
 Section ``Charge expectation value for weak and strong interactions.'' Plot $\expval{n_i}$ across
@@ -427,7 +443,22 @@ binary Shannon entropy for each ``occupation probability'' $\nu_k$,
 Every term in the sum vanishes when $\nu_k\in\{0,1\}$ and is strictly positive otherwise, so
 $S_{\mathrm{corr}}=0$ if and only if the ground state is exactly a Slater determinant. The bigger
 $S_{\mathrm{corr}}$ is, the further the true ground state has drifted from anything a single
-mean-field calculation could ever produce, no matter how it was initialized.
+mean-field calculation could ever produce, no matter how it was initialized. Figure~\ref{fig:corr-entropy} draws
+the eigenvalues $\nu_k$ as the fillings of cups, for a Slater determinant and for a correlated
+ground state.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/mps_fermionic/corr_entropy.pdf}
+  \caption{The eigenvalues of the correlation matrix, one cup per natural orbital $\ket{k}$, filled
+    to $\nu_k$. (a) A Slater determinant, the four-site Hubbard chain of the notebook at $U=0$ and
+    half filling: every cup is full or empty, so every term of Eq.~\eqref{eq:corrent} vanishes and
+    $S_{\mathrm{corr}}=0$. (b) The same chain at $U=6t$, from exact diagonalization: the eight
+    eigenvalues come in spin pairs, $0.82$, $0.73$, $0.27$ and $0.18$, no cup is full or empty, and
+    $S_{\mathrm{corr}}=4.22$, meaning that no single Slater determinant reproduces this ground state.
+    What $S_{\mathrm{corr}}$ counts is exactly how far the cups are from being full or empty.}
+  \label{fig:corr-entropy}
+\end{figure}
 
 \subsection{Applied to the spinless chain}
 Let us apply Eq.~\eqref{eq:corrent} to the model of Eq.~\eqref{eq:cdw}. We already know both of its
@@ -514,12 +545,18 @@ entanglement-entropy bound we derived in Session 4.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.80\textwidth]{figures/tensor_notation.pdf}
-  \caption{Diagrammatic notation for tensors: a dot with one leg per index. (a) A scalar has no
-    legs, (b) a vector has one, (c) a matrix has two, and (d) a rank-three tensor has three.
-    (e) Summing over an index shared by two tensors is drawn by joining the corresponding legs
-    into a single line, so a two-legged dot joined to a one-legged dot leaves one free leg and is
-    therefore a vector again, exactly as matrix-vector multiplication should be.}
+  \includegraphics[width=\textwidth]{figures/mps_fermionic/tensor_notation.pdf}
+  \caption{Diagrammatic notation for tensors, and the matrix product operator. (a) A dot with one
+    leg per index: a scalar $s$ has no legs, a vector $v_i$ has one, a matrix $A_{ij}$ has two and a
+    rank-three tensor $T_{ijk}$ has three. Summing over an index shared by two tensors is drawn by
+    joining the corresponding legs, here the leg $j$ of a matrix and a vector, so what is left has
+    one free leg and is a vector again, exactly as matrix-vector multiplication should be. (b) A
+    matrix product operator, the operator counterpart of the matrix product state we used
+    throughout Session 4. Each site tensor $W_i^{s_is_i'}$ carries two physical legs, one up for the
+    row index $s_i$ and one down for the column index $s_i'$, on top of the two internal bond legs,
+    here of dimension $\chi_W$, and the tensors at the ends carry a single bond leg. For a
+    nearest-neighbor Hamiltonian those internal bonds only need to carry a handful of states, which
+    is enough to encode $\Ham$ exactly rather than approximately.}
   \label{fig:tensor-notation}
 \end{figure}
 
@@ -535,19 +572,8 @@ For a nearest-neighbor Hamiltonian like $\Ham_{\mathrm{Heis}} = J\sum_i \vb S_i\
 this internal bond dimension, which we call $\chi_W$, can be made very small, just large enough to carry ``nothing has
 happened yet,'' ``an $S^x$, $S^y$, or $S^z$ was just placed and is waiting for its partner on the
 next site,'' and ``the interaction has already been closed,'' so a handful of internal states per
-bond is enough to represent the exact Hamiltonian, not an approximation to it.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.85\textwidth]{figures/mpo_chain.pdf}
-  \caption{A matrix product operator, the operator counterpart of the matrix product state we
-    used throughout Session 4. Each site tensor $W_i^{s_is_i'}$ carries \emph{two}
-    physical legs, one for the row index $s_i$ and one for the column index $s_i'$, on
-    top of the same two internal bond legs as before, here of dimension $\chi_W$. For a
-    nearest-neighbor Hamiltonian those internal bonds only need to carry a handful of states,
-    which is enough to encode $\Ham$ exactly rather than approximately.}
-  \label{fig:mpo-chain}
-\end{figure}
+bond is enough to represent the exact Hamiltonian, not an approximation to it. Panel (b) of
+Figure~\ref{fig:tensor-notation} draws this chain of operator tensors.
 
 \subsection{Applying $\Ham$ to a state: contraction and compression}
 The operation we need over and over is $\Ham\ket{\Psi}$. Diagrammatically this is simply joining the
@@ -590,18 +616,21 @@ procedure, reached from two different starting points.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/mps_algorithm.pdf}
-  \caption{The two operations that every calculation in these two sessions is built out of.
-    (a) Acting with $\Ham$, drawn by joining the matrix product operator's column legs to the
-    physical legs of the state one site at a time, with the state's legs drawn pointing up here so
-    that the two chains stack. The two bond legs that now run in parallel merge into a single one
-    of dimension $\chi\chi_W$, so the result is again a matrix product state, just a fatter one,
-    and a singular value decomposition on every bond keeping the largest $\chi$ values compresses it
-    back. (b) The variational ground-state search. Everything except the tensor at site $i$ is
-    contracted into a left and a right environment, which collapses the exponentially large problem
-    to the small eigenvalue problem $H_{\mathrm{eff}}(i)M_i^{s_i}=\lambda M_i^{s_i}$ at that
-    one site. Solving it, stepping one site over and repeating, back and forth along the chain, is
-    the DMRG sweep.}
+  \includegraphics[width=\textwidth]{figures/mps_fermionic/mps_algorithm.pdf}
+  \caption{The two operations that every calculation in these two sessions is built out of, with the
+    tensors of the state in teal and those of the operator in violet. (a) Acting with $\Ham$, drawn
+    by joining the matrix product operator's column legs to the physical legs of the state one site
+    at a time, with the state's legs drawn pointing up so that the two chains stack. The two bond
+    legs that now run in parallel, of dimensions $\chi$ and $\chi_W$, merge into a single one of
+    dimension $\chi\chi_W$, drawn thick, so the result is again a matrix product state, just a fatter
+    one, and a singular value decomposition on every bond keeping the largest $\chi$ values
+    compresses it back. (b) The variational ground-state search. The state, the operator and the
+    conjugate state are stacked, everything except site $i$ is contracted into a left and a right
+    environment, the shaded blocks, and the tensors of the state and of its conjugate at $i$ are left
+    out, so what remains is $H_{\mathrm{eff}}(i)$ with the open legs on which $M_i^{s_i}$ sits. This
+    collapses the exponentially large problem to the small
+    eigenvalue problem $H_{\mathrm{eff}}(i)M_i^{s_i}=\lambda M_i^{s_i}$ at that one site. Solving it,
+    stepping one site over and repeating, back and forth along the chain, is the DMRG sweep.}
   \label{fig:mps-algorithm}
 \end{figure}
 

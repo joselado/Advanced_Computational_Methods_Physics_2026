@@ -33,6 +33,7 @@ DOWN_TIP, DOWN_TAIL = (0.25, 0.75, 1.0), (0.03, 0.12, 0.55)
 ELECTRON = (0.10, 0.62, 0.95)                 # the films' cyan, a little deeper so it holds on paper
 SITE = (0.06, 0.06, 0.09)
 BOND = (0.55, 0.56, 0.60)
+TENSOR = (0.02, 0.30, 0.32)                  # tensors of states: a deeper teal than ACCENT[4], which prints as electron cyan
 ACCENT = {1: (1.0, 0.55, 0.12), 2: (0.12, 0.75, 0.30), 3: (0.10, 0.62, 0.95),
           4: (0.05, 0.60, 0.60), 5: (0.55, 0.35, 0.95)}
 
@@ -199,6 +200,68 @@ def column(name, loc, height, r=0.24, rgb=ELECTRON):
                loc=loc)
 
 
+def ghost(name, rgb, alpha=0.25):
+    """A translucent copy of a series color, for a ghost state (a partner, a forbidden state)."""
+    m = bpy.data.materials.get(name)
+    if m is None:
+        m = principled(name, rgb, rough=0.4, emit=0.05, alpha=alpha, spec=0.3)
+    return m
+
+
+def ghost_arrow(name, loc, direction, length=0.8, alpha=0.25):
+    """A spin arrow drawn as a translucent ghost in the color of its direction."""
+    d = Vector(direction).normalized()
+    rgb = UP_TIP if d.z >= -1e-9 else DOWN_TIP
+    me = arrow_mesh(name, ghost('ghost_%s_%.2f' % ('up' if d.z >= -1e-9 else 'dn', alpha), rgb, alpha))
+    return obj(name, me, loc=loc, rot=d.to_track_quat('Z', 'Y').to_euler(), scale=length)
+
+
+def bm_rounded_box(bm, center, size, radius, mat_index=0):
+    """A box of full sizes `size` with edges rounded by `radius` (a bevel on a cube)."""
+    res = bmesh.ops.create_cube(bm, size=1.0, matrix=Matrix.Translation(center) @
+                                Matrix.Diagonal((*size, 1.0)))
+    verts = res['verts']
+    edges = list({e for v in verts for e in v.link_edges})
+    bmesh.ops.bevel(bm, geom=verts + edges, offset=radius, segments=4, affect='EDGES', profile=0.5)
+    for f in _faces_of([v for v in bm.verts]):
+        f.material_index, f.smooth = mat_index, True
+
+
+def tensor(name, loc, size=(0.7, 0.7, 0.7), rgb=None, radius=0.12):
+    """A tensor as a rounded cube, in the teal of session 4 unless told otherwise."""
+    rgb = ACCENT[4] if rgb is None else rgb
+    m = mat('tensor_%d_%d_%d' % tuple(int(255 * c) for c in rgb), rgb, rough=0.35, emit=0.08, spec=0.5)
+    return obj(name, mesh_of(name, [m], lambda bm: bm_rounded_box(bm, Vector((0, 0, 0)), size, radius)), loc=loc)
+
+
+def leg(name, p0, p1, r=0.05, rgb=BOND):
+    """A tensor leg (an index) as a thin rod; a thicker `r` reads as a larger bond dimension."""
+    m = mat('leg_%d_%d_%d' % tuple(int(255 * c) for c in rgb), rgb, rough=0.5, spec=0.3)
+    return obj(name, mesh_of(name, [m], lambda bm: bm_cylinder(bm, p0, p1, r, seg=16)))
+
+
+def cut(name, loc, size=(0.04, 2.0, 2.0), rgb=None, session=4, alpha=0.35):
+    """A cut through a system as a thin translucent slab in the session accent, normal along x."""
+    rgb = ACCENT[session] if rgb is None else rgb
+    m = ghost('cut_%d_%d_%d_%.2f' % (*(int(255 * c) for c in rgb), alpha), rgb, alpha)
+    return obj(name, mesh_of(name, [m], lambda bm: bm_rounded_box(bm, Vector((0, 0, 0)), size, 0.015)), loc=loc)
+
+
+def cup(name, loc, fill, r=0.32, h=0.9, rgb=ELECTRON):
+    """An occupation as a glass cup of radius r and height h filled to the fraction `fill` (0 to 1)."""
+    glass = ghost('cup_glass2', (0.62, 0.66, 0.76), 0.35)        # dark enough to read on white paper
+    obj(name, mesh_of(name, [glass], lambda bm: bm_cylinder(bm, (0, 0, 0), (0, 0, h), r, seg=48, caps=False)),
+        loc=loc)
+    rim = mat('cup_rim', (0.30, 0.32, 0.38), rough=0.5, spec=0.3)  # a band at the top marks the full height
+    obj(name + '_rim', mesh_of(name + '_rim', [rim], lambda bm: bm_cylinder(bm, (0, 0, h - 0.035), (0, 0, h),
+                                                                            1.02 * r, seg=48, caps=False)), loc=loc)
+    base = mat('site', SITE, rough=0.5, spec=0.3)
+    obj(name + '_base', mesh_of(name + '_base', [base], lambda bm: bm_cylinder(bm, (0, 0, 0), (0, 0, 0.03), r,
+                                                                             seg=48)), loc=loc)
+    if fill > 1e-3:
+        column(name + '_fill', (loc[0], loc[1], loc[2] + 0.03), fill * (h - 0.03), r=0.92 * r, rgb=rgb)
+
+
 def anchor(name, co):
     """A point that the TikZ overlay can refer to as (name)."""
     ANCHORS[name] = Vector(co)
@@ -255,6 +318,13 @@ def setup_render(pct, samples):
     sc = bpy.context.scene
     sc.render.engine = 'CYCLES'
     sc.cycles.device = 'CPU'
+    if os.environ.get('FIGLIB_GPU'):              # FIGLIB_GPU=OPTIX (or CUDA) renders on the card
+        prefs = bpy.context.preferences.addons['cycles'].preferences
+        prefs.compute_device_type = os.environ['FIGLIB_GPU']
+        prefs.get_devices()
+        for d in prefs.devices:
+            d.use = d.type == prefs.compute_device_type
+        sc.cycles.device = 'GPU'
     sc.cycles.samples = samples
     sc.cycles.use_denoising = True
     sc.render.film_transparent = True

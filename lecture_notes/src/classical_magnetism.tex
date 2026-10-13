@@ -53,6 +53,26 @@ charge density waves, superconductivity, and every strongly correlated phase we 
 in the course. What makes second quantization so useful is that it lets us write both the
 single-particle and the many-body piece of Eq.~\eqref{eq:generalH} in one common language.
 
+The price of the quartic term is the size of the space it acts on. One electron on $L$ orbitals
+has $L$ states, so $\Ham_0$ is an $L\times L$ matrix, while any number of electrons on the same
+$L$ orbitals has $2^L$ occupation configurations, since each orbital is either empty or
+occupied, and the interacting $\Ham$ is a $2^L\times 2^L$ matrix. Figure~\ref{fig:exponential-wall}
+counts both, first for a chain of four sites and then as $L$ grows.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/classical_magnetism/exponential_wall.pdf}
+  \caption{The dimension of the single-particle and of the many-body problem. (a) One electron
+    on a chain of four sites can sit on any of the four, drawn here as one electron and three
+    ghosts, so the hopping $t_{ij}$ is a $4\times4$ matrix with entries only between neighbors.
+    (b) The same four sites holding any number of electrons, from none to four: each slab is one
+    occupation configuration, a filled ball an occupied site, and the $2^4=16$ slabs come in
+    groups of $1$, $4$, $6$, $4$ and $1$ by electron number $N$. (c) The two dimensions against
+    $L$ on one linear scale, $L$ in front and $2^L$ behind, meaning that the single-particle
+    problem stays flat while the many-body one reaches $1024$ already at $L=10$.}
+  \label{fig:exponential-wall}
+\end{figure}
+
 \section{Second quantization}
 So let us set up that language. We define the fermionic annihilation and creation operators
 $\ann{i}$, $\cre{i}$ for orbital $i$, and a vacuum state $\vac$ that has no electrons at all,
@@ -246,19 +266,26 @@ capture ferromagnets, antiferromagnets, spin spirals, or even skyrmion textures.
     some tolerance, we are done: this is the self-consistent solution. Otherwise, mix the old
     and new guesses and go back to step 2.
 \end{enumerate}
+Figure~\ref{fig:scf-loop} draws these four steps as a loop, each one on a chain of four sites.
 Because this is a nonlinear fixed-point problem, it can converge to different fixed points
 depending on where you start it, and that is exactly the initial-guess dependence we come back
 to below.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/scf_loop.pdf}
+  \includegraphics[width=\textwidth]{figures/classical_magnetism/scf_loop.pdf}
   \caption{The self-consistency loop, which is what every mean-field calculation in this session
-    actually runs. Steps 2 and 3 are the two halves that alternate: an order parameter fixes a
-    single-particle Hamiltonian through Eq.~\eqref{eq:mfham}, and diagonalizing that Hamiltonian
-    and filling its lowest orbitals up to the target electron number fixes a new order parameter.
+    actually runs. (a) The four steps as four stations, each drawn on a chain of four sites. Steps
+    2 and 3 are the two halves that alternate: an order parameter fixes a single-particle
+    Hamiltonian through Eq.~\eqref{eq:mfham}, drawn as the onsite energy of the spin-up electrons
+    lowered where $m_i>0$ and raised where $m_i<0$, and diagonalizing that Hamiltonian and filling
+    its lowest orbitals up to the target electron number, the lowest four of the eight
+    single-particle levels of four spinful sites at half filling, fixes a new order parameter.
     Convergence means the two agree to within a tolerance, and until they do we mix the old and
-    new guesses and go around again.}
+    new guesses and go around again. (b) The mean-field energy over the order parameter, with a
+    ferromagnetic and a lower antiferromagnetic valley. Two starting guesses on either side of the
+    ridge roll into different valleys, meaning that the loop converges to a different
+    self-consistent solution depending on where we start it.}
   \label{fig:scf-loop}
 \end{figure}
 
@@ -302,7 +329,9 @@ solution is always lower in energy, and the gap between the two scales as
   E_{\mathrm{FM}} - E_{\mathrm{AFM}} \;\sim\; \frac{1}{U} \xrightarrow{U\to\infty} 0.
 \end{equation}
 So the two solutions only become degenerate in the strict atomic limit $U\to\infty$; at any
-finite $U$ they are physically distinct states, one metallic and one insulating.
+finite $U$ they are physically distinct states, one metallic and one insulating. Panel (b) of
+Figure~\ref{fig:scf-loop} draws this as an energy landscape with two valleys, and a run that
+starts on the ferromagnetic side stays in the higher one.
 
 \begin{notebook}
 Section ``The interacting Hubbard dimer.'' Compare a ferromagnetic-seeded and an
@@ -328,43 +357,49 @@ Section~\ref{sec:dimer}. For $U \gg t$, this basis splits cleanly into two group
 \begin{itemize}[nosep]
   \item a four-dimensional \textbf{ground-state manifold} of singly-occupied configurations
     ($\up\dn$, $\dn\up$, $\up\up$, $\dn\dn$ across the two sites), sitting at energy $\sim 0$;
-  \item a \textbf{virtual (high-energy) manifold} of doubly-occupied configurations, sitting at
+  \item a \textbf{virtual (high-energy) manifold} of doubly occupied configurations, sitting at
     energy $\sim U$.
 \end{itemize}
 Look closely at the ground-state manifold: it is exactly the Hilbert space of two
 spin-$\tfrac12$ degrees of freedom. In other words, our strongly interacting electronic problem
-has quietly turned into a spin problem.
+has quietly turned into a spin problem. Panel (c) of Figure~\ref{fig:superexchange} draws the six states with
+their energies.
 
 \subsection{Superexchange: $J = 4t^2/U$}
 The only term that connects the two manifolds is the hopping $t$, and symmetry alone (there is
 no spin-rotation breaking anywhere in $\Ham_{\mathrm{Hub}}$) already tells us that the low-energy
 effective Hamiltonian has to be proportional to $\vb S_1\cdot\vb S_2$ at leading order in spin
 operators. To actually pin down the coefficient, we treat $\Ham_U = U\sum_i n_{i\up}n_{i\dn}$ as
-the unperturbed Hamiltonian, with the singly- and doubly-occupied configurations of
+the unperturbed Hamiltonian, with the singly and doubly occupied configurations of
 Section~\ref{sec:dimer} as its eigenstates, and the hopping $V =
 -t\sum_\sigma(\cre{0\sigma}\ann{1\sigma}+\mathrm{h.c.})$ as the perturbation. The parallel
-configurations $\ket{\up\up}$ and $\ket{\dn\dn}$ have no doubly-occupied virtual state to hop into
+configurations $\ket{\up\up}$ and $\ket{\dn\dn}$ have no doubly occupied virtual state to hop into
 at all, since Pauli exclusion blocks it, so they are exact eigenstates already, unshifted at any
-order: this is our triplet, sitting at $E_{\mathrm{triplet}}=0$.
+order: this is our triplet, sitting at $E_{\mathrm{triplet}}=0$. Panel (a) of
+Figure~\ref{fig:superexchange} draws this blocked hop, and panel (b) the one that is allowed when
+the spins are antiparallel.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.92\textwidth]{figures/superexchange.pdf}
+  \includegraphics[width=\textwidth]{figures/classical_magnetism/superexchange.pdf}
   \caption{The two spin channels of the half-filled Hubbard dimer at strong coupling, which is
     where the $J=4t^2/U$ of Eq.~\eqref{eq:superexchange} comes from. (a) With parallel spins there
-    is no doubly-occupied state available to hop into, Pauli exclusion blocks the process outright,
+    is no doubly occupied state available to hop into, Pauli exclusion blocks the process outright,
     and the triplet stays exactly at $E_{\mathrm{triplet}}=0$ at every order. (b) With antiparallel
-    spins either electron can hop onto its neighbor, passing through a virtual doubly-occupied
+    spins either electron can hop onto its neighbor, passing through a virtual doubly occupied
     configuration at energy $U$ and landing on the exchanged configuration. Each hop carries a
     matrix element $-t$ and the virtual state is paid for by an energy denominator $-U$, so
     second-order perturbation theory lowers the antiparallel channel by an amount of order
-    $t^2/U$ while leaving the parallel one untouched.}
+    $t^2/U$ while leaving the parallel one untouched. (c) All six two-electron states of the dimer
+    as levels: the four with one electron per site at $E=0$, the ground-state manifold,
+    which is the Hilbert space of two spins, and the two doubly
+    occupied states raised by $U$, which the hops of (b) visit only virtually.}
   \label{fig:superexchange}
 \end{figure}
 
 The antiparallel configurations are more subtle, since \emph{either} electron can hop, so each one
 of $\ket{\up\dn} = \cre{0\up}\cre{1\dn}\vac$ and $\ket{\dn\up} = \cre{0\dn}\cre{1\up}\vac$ connects
-through $V$ to \emph{both} virtual doubly-occupied states, $\ket{2,0} = \cre{0\up}\cre{0\dn}\vac$
+through $V$ to \emph{both} virtual doubly occupied states, $\ket{2,0} = \cre{0\up}\cre{0\dn}\vac$
 and $\ket{0,2} = \cre{1\up}\cre{1\dn}\vac$, each sitting at energy $U$ above the low-energy
 manifold, with matrix elements $\bra{2,0}V\ket{\up\dn} = -t$ and $\bra{0,2}V\ket{\up\dn}=-t$ (and,
 by the site-exchange symmetry of the problem, $\bra{2,0}V\ket{\dn\up} = +t$,
@@ -372,7 +407,7 @@ $\bra{0,2}V\ket{\dn\up}=+t$, the sign flipping because of fermionic anticommutat
 electrons are reordered onto the same site). It is only the total spin, not the sublattice, that
 is conserved here, so the clean way to organize the calculation is to work directly in the
 singlet/triplet basis rather than $\{\ket{\up\dn},\ket{\dn\up}\}$. Only the singlet combination
-$\ket{s}=\tfrac1{\sqrt2}(\ket{\up\dn}-\ket{\dn\up})$ has any overlap with the doubly-occupied
+$\ket{s}=\tfrac1{\sqrt2}(\ket{\up\dn}-\ket{\dn\up})$ has any overlap with the doubly occupied
 states at all (the triplet combination's matrix elements to $\ket{2,0}$ and $\ket{0,2}$ cancel by
 the sign flip above), and by the same site-exchange symmetry only the symmetric combination
 $\ket{d}=\tfrac1{\sqrt2}(\ket{2,0}+\ket{0,2})$ couples back to it, since the antisymmetric
@@ -385,7 +420,7 @@ under. Explicitly,
 \end{equation}
 so the singlet sector reduces to an exact $2\times2$ problem, $\ket s$ at energy $0$ coupled to
 $\ket d$ at energy $U$ by the matrix element $-2t$, with the orthogonal antisymmetric
-doubly-occupied combination decoupled entirely, remaining an exact eigenstate at energy $U$.
+doubly occupied combination decoupled entirely, remaining an exact eigenstate at energy $U$.
 Standard non-degenerate second-order (Schrieffer--Wolff, or equivalently L\"owdin) perturbation
 theory on this $2\times2$ block gives
 \begin{equation}
@@ -407,7 +442,7 @@ a gap of exactly $J$ between them. Matching this gap to the one we just computed
   \label{eq:superexchange}
 \end{equation}
 the \textbf{antiferromagnetic superexchange} coupling. Intuitively: virtual hopping into the
-doubly-occupied states, which is Pauli-blocked for parallel spins, lowers the energy of the
+doubly occupied states, which is Pauli-blocked for parallel spins, lowers the energy of the
 singlet combination of antiparallel configurations, and that is why the effective low-energy
 interaction ends up favoring antialignment even though the underlying Hubbard repulsion has no
 explicit spin dependence at all. The same argument goes through unchanged on an arbitrary lattice with hoppings
@@ -448,27 +483,22 @@ like the triangular and kagome lattices, which are built out of corner- or edge-
 triangles. There, no assignment of two sublattices can satisfy every antiferromagnetic bond at
 once. The classical ground state instead becomes \textbf{non-collinear}: neighboring spins
 rotate by $120^\circ$ as you go around each triangle, producing a spiral magnetic order with a
-multi-site magnetic unit cell.
+multi-site magnetic unit cell. Figure~\ref{fig:neel-vs-spiral} draws the N\'eel state, a single
+frustrated triangle and the $120^\circ$ order side by side.
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[c]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/classical_magnetism/neel_square_lattice.pdf}
-    \caption{Bipartite square lattice}
-  \end{subfigure}\hfill
-  \begin{subfigure}[c]{0.53\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/classical_magnetism/spiral_triangular_lattice.pdf}
-    \caption{Frustrated triangular lattice}
-  \end{subfigure}
+  \includegraphics[width=\textwidth]{figures/classical_magnetism/neel_vs_spiral.pdf}
   \caption{Classical ground states of the Heisenberg model of Eq.~\eqref{eq:heislattice} with
     antiferromagnetic $J>0$, obtained by treating every spin as a classical vector. (a) On a
     bipartite lattice every bond connects the two sublattices, so $\vb S_A = -\vb S_B$ satisfies
-    all of them simultaneously and the order is collinear N\'eel. (b) On the triangular lattice
-    the bonds sit on corner-sharing triangles and no two-sublattice assignment can satisfy all of
-    them, so the minimum-energy configuration is instead the non-collinear $120^\circ$ spiral,
-    with a magnetic unit cell spanning several sites.}
+    all of them simultaneously and the order is collinear N\'eel. (b) A single triangle is where
+    this fails: once two spins are antiparallel and satisfy their bond, the third spin cannot be
+    antiparallel to both, drawn as two ghost arrows, so one bond is left unsatisfied regardless of
+    its choice. (c) On the triangular lattice the bonds sit on edge-sharing triangles and no
+    two-sublattice assignment can satisfy all of them, so the minimum-energy configuration is instead the non-collinear $120^\circ$ spiral,
+    with a magnetic unit cell spanning three sites, drawn in one color since none of the three
+    sublattices is up or down.}
   \label{fig:neel-vs-spiral}
 \end{figure}
 

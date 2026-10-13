@@ -72,18 +72,24 @@ Eq.~\eqref{eq:mpsansatz} collapses down to a single number, exactly as it must f
 scalar coefficient. The internal matrices $M_n^{s_n}$ are $\chi_{n-1}\times \chi_n$, and the
 integer $\chi$ (we will mostly take it uniform along the chain) is the \textbf{bond dimension}: it
 is the one knob that controls how much this ansatz can represent, and it is going to be the
-central character of this whole session.
+central character of this whole session. Figure~\ref{fig:mps-chain} draws the two ways of
+storing the same state next to each other.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.90\textwidth]{figures/mps_chain.pdf}
-  \caption{The matrix product state of Eq.~\eqref{eq:mpsansatz} drawn as a tensor network. Each
+  \includegraphics[width=\textwidth]{figures/mps_spin_chains/mps_chain.pdf}
+  \caption{The state of Eq.~\eqref{eq:generalwf} stored in two ways. (a) The coefficients
+    $C(s_1,\ldots,s_L)$ as one tensor with $L$ physical legs, one per site, which means $d^L$
+    numbers to store. (b) The matrix product state of Eq.~\eqref{eq:mpsansatz}, the same legs
+    hanging from a train of small tensors. Each
     site carries one tensor $M_n^{s_n}$, with a vertical \emph{physical} leg running over the $d$
     local states of that site and horizontal \emph{bond} legs of dimension $\chi$ joining it to
     its neighbors. Joining two legs means summing over the shared index, so contracting the
     horizontal legs from left to right is precisely the matrix product of
     Eq.~\eqref{eq:mpsansatz}. The two end tensors carry a single bond leg each, a row vector and
-    a column vector, which is why the whole contraction collapses to one number.}
+    a column vector, which is why the whole contraction collapses to one number. What changes
+    between the panels is only where the numbers live: one block that grows as $d^L$, or $L$
+    small tensors of $d\chi^2$ numbers each, Eq.~\eqref{eq:paramcount}.}
   \label{fig:mps-chain}
 \end{figure}
 
@@ -297,17 +303,25 @@ $\lambda_\alpha^2 = 1/\chi_n$. This is the single most important equation in thi
 are after has entanglement entropy $S_A$ across some cut, we need at least $\chi \gtrsim e^{S_A}$
 there to capture it. So the entire question of whether matrix product states are a good idea for a
 given problem reduces to: how does $S_A$ behave as we grow the system?
+Figure~\ref{fig:schmidt-cut} follows what crosses a cut, from two spins to a whole chain, a
+square lattice and a random state.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.70\textwidth]{figures/schmidt_cut.pdf}
-  \caption{The Schmidt decomposition of Eq.~\eqref{eq:schmidt} read directly off a matrix product
-    state. Cutting the chain at bond $n$ separates it into blocks $A$ and $B$ and exposes the
-    single bond index $\alpha$ that joined them. Since that index takes only $\chi_n$ values by
+  \includegraphics[width=\textwidth]{figures/mps_spin_chains/schmidt_cut.pdf}
+  \caption{What crosses a cut. (a) The two cases of the section on separable and entangled
+    states: nothing crosses the cut of the product state $\ket{\up}_A\otimes\ket{\dn}_B$, while
+    the singlet, two spins with no moment of their own, is held together by one strand across
+    it, and $S_A=\ln2$. (b) The Schmidt decomposition of Eq.~\eqref{eq:schmidt} read directly
+    off a matrix product state. Cutting the chain at bond $n$ separates it into blocks $A$ and
+    $B$ and exposes the single bond index $\alpha$ that joined them, drawn opened into its
+    $\chi_n$ values. Since that index takes only $\chi_n$ values by
     construction, the sum in Eq.~\eqref{eq:schmidt} can run over at most $\chi_n$ terms, the
     Schmidt rank obeys $r\le\chi_n$, and the entropy across the cut obeys the bound of
     Eq.~\eqref{eq:arealawbound}. Everything the two halves of the chain know about each other has
-    to pass through that one index.}
+    to pass through that one index. (c) What a cut severs in a gapped ground state: one bond of a
+    chain, a whole line of bonds of a square lattice, and, for a random state, strands everywhere,
+    so that the entropy grows with the volume of the block, the volume law.}
   \label{fig:schmidt-cut}
 \end{figure}
 
@@ -328,7 +342,8 @@ which would force $\chi$ to grow exponentially with system size and defeat the w
 ansatz. Ground states of local 1D Hamiltonians are a vanishingly special corner of the full Hilbert
 space, and it is precisely because they live in that corner, low or at most logarithmically growing
 entanglement, that a bond dimension $\chi$ that stays modest (or grows only polynomially) as
-$L\to\infty$ can capture them accurately.
+$L\to\infty$ can capture them accurately. Panel (c) of Figure~\ref{fig:schmidt-cut} puts the
+three cases side by side.
 
 A very clean way to see the saturation directly is to solve an exactly dimerized chain, where sites
 are grouped into decoupled pairs, $\Ham = J\sum_k \vb S_{2k-1}\cdot\vb S_{2k}$ with no coupling
@@ -393,21 +408,14 @@ means, by Eq.~\eqref{eq:arealawbound}, that we need roughly the \emph{square} of
 to reach the same accuracy. This is why virtually every practical matrix product state calculation,
 including everything else in this session, uses open boundary conditions: periodic chains are
 simply much more expensive for the same physical answer.
+Figure~\ref{fig:boundary-cuts} draws the two cases side by side.
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[c]{0.60\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/mps_spin_chains/boundary_open_schematic.pdf}
-    \caption{Open chain, one cut}
-  \end{subfigure}\hfill
-  \begin{subfigure}[c]{0.24\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/mps_spin_chains/boundary_closed_schematic.pdf}
-    \caption{Ring, two cuts}
-  \end{subfigure}
-  \caption{Why open boundaries are so much cheaper. The dashed line marks the block $A$ whose
-    entanglement entropy we compute. (a) On an open chain, a contiguous block borders the rest of
+  \includegraphics[width=\textwidth]{figures/mps_spin_chains/boundary_cuts.pdf}
+  \caption{Why open boundaries are so much cheaper. The teal tray marks the block $A$ whose
+    entanglement entropy we compute, and each pane a cut, with the bond it severs drawn in
+    teal. (a) On an open chain, a contiguous block borders the rest of
     the system at a single point, so one bond is severed. (b) On a ring the same block is
     adjacent to the rest at both of its ends, so any bipartition severs two bonds and each one
     contributes, roughly doubling $S_A$. Through the bound of
@@ -444,7 +452,23 @@ $\Ham_{\mathrm{TFI}}$ must interpolate between these two very different classica
 does so through a quantum phase transition. (The exact solution of this model comes from
 mapping spins onto free fermions via a Jordan-Wigner transformation, a construction we will meet
 properly in Session 5; it places the critical point, for the normalization used here, at
-$B_x = J/2$.)
+$B_x = J/2$.) Figure~\ref{fig:tfi} draws the chain at the two ends of the field and at the
+transition.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/mps_spin_chains/tfi.pdf}
+  \caption{The transverse-field Ising chain of Eq.~\eqref{eq:tfi} at three fields, each cut at
+    its central bond. (a) At $B_x=0$ every arrow points along $z$, and the all-down state
+    standing behind as a ghost is its degenerate partner; either one is a product state, so
+    nothing crosses the cut. (b) Near the critical field $B_x=J/2$ the arrows tilt toward $x$
+    and the chain breaks into domains of every size, and this is where the most strands cross
+    the cut, the peak of $S_A$ found in the subsection on the entanglement peak and the order
+    parameter. (c) For $B_x\gg J$ every arrow
+    points along $x$, again a product state with nothing across the cut. What to look at is
+    that both ends are classical and only the middle is not.}
+  \label{fig:tfi}
+\end{figure}
 
 \subsection{The entanglement peak and the order parameter}
 Since both classical limits have zero entanglement entropy, and the state in between them is
@@ -583,12 +607,26 @@ degree of freedom, even though every microscopic spin in the chain is spin-$1$. 
 the microscopic spin, but a genuine fraction of it. The cleanest exactly solvable model with this
 same edge physics is the \textbf{AKLT point}, a spin-$1$ chain built from projected valence bonds
 that shares the Heisenberg chain's phase and makes the emergent spin-$\tfrac12$ edge states exactly
-computable rather than just numerically observed. At $L=50$ the two edge moments are still
+computable rather than just numerically observed; Figure~\ref{fig:aklt} draws how it is built and
+where the edge spins come from. At $L=50$ the two edge moments are still
 visibly ``leaking'' into the bulk; only by $L=100$ do we see them cleanly localized at the two
 ends with essentially nothing in between, confirming that in the thermodynamic limit the spin-$1$
 Heisenberg chain has a fully gapped bulk and a pair of free spin-$\tfrac12$ edge modes. (This is
 the Haldane phase, and it is one of the simplest examples of a symmetry-protected topological
 phase in one dimension.)
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/mps_spin_chains/aklt.pdf}
+  \caption{The AKLT construction of the spin-$1$ chain. (a) Each spin-$1$ is written as two
+    spin-$\tfrac12$ inside one capsule, the projector that keeps only their symmetric, total
+    spin $1$ states. (b) The right half of each site forms a singlet with the left half of the
+    next site, so every bond carries one valence bond and the bulk has no free moment. (c) The
+    outer halves of the two end sites have no partner, and they are the free spin-$\tfrac12$ at
+    the edges; a small uniform field polarizes both along it, so each edge region carries a
+    moment of $-\tfrac12$, half of what a spin-$1$ can carry, while the bulk stays at zero.}
+  \label{fig:aklt}
+\end{figure}
 
 We can see the same physics again, even more directly, in the \textbf{dynamical} correlator
 $\expval{S_n^+(t)S_n^-(0)}$ as a function of both position $n$ and energy $\omega$, the same kind of

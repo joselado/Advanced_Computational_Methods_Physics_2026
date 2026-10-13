@@ -58,17 +58,22 @@ every orbital is independently either empty or filled, so we get one binary choi
 This is worth contrasting with the single-particle sector alone, spanned by $\cre{i}\vac$ for
 $i=1,\dots,L$, which only has dimension $L$: restricting to one electron is precisely what makes
 single-particle physics polynomially cheap, and dropping that restriction is precisely what makes
-many-body physics exponentially expensive.
+many-body physics exponentially expensive. Panel (b) of Figure~\ref{fig:fock-basis} draws the eight states of three
+orbitals.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/many_body_fermions/fock_space_trimer_basis.pdf}
-  \caption{The complete many-body basis of three spinless orbitals, drawn as three levels per
-    state with a dot on every occupied one. Reading across, there is one empty configuration,
-    three with a single electron, three with two electrons and one completely filled state, for
-    $1+3+3+1 = 8 = 2^3$ basis states in total. Every additional orbital doubles this count,
-    because each orbital is independently either empty or filled, and that doubling is exactly
-    the exponential wall that separates many-body from single-particle physics.}
+  \includegraphics[width=\textwidth]{figures/many_body_fermions/fock_basis.pdf}
+  \caption{The local Hilbert spaces and the many-body basis built from them. (a) The states of a
+    single site: two for a spin-$\tfrac12$, up and down, two for a spinless fermion, empty and
+    occupied, and four for a spinful fermion, empty, up, down and doubly occupied, so a chain of
+    $L$ sites has $2^L$, $2^L$ and $4^L$ many-body states. (b) The complete many-body basis of
+    three spinless orbitals, with a ball on every occupied orbital and the states grouped by their
+    particle number $N$. Reading across, there is one empty configuration, three with a single
+    electron, three with two electrons and one completely filled state, for $1+3+3+1 = 8 = 2^3$
+    basis states in total. Every additional orbital doubles this count, because each orbital is
+    independently either empty or filled, and that doubling is exactly the exponential wall that
+    separates many-body from single-particle physics.}
   \label{fig:fock-basis}
 \end{figure}
 
@@ -76,7 +81,8 @@ If the fermions carry spin, each site has \emph{four} local states, $\ket{0}$, $
 $\ket{\dn}$, $\ket{\up\dn}$, exactly as in Session 1. Equivalently, we can think of a spinful chain
 as $2L$ independent spinless orbitals (spin becomes just another orbital index), so the Fock space
 has dimension $2^{2L} = 4^L$: twice the exponent of the spinless case, since every site now
-contributes two binary choices instead of one. Note how this lines up with the
+contributes two binary choices instead of one, which is what panel (a) of
+Figure~\ref{fig:fock-basis} puts side by side with the spin and the spinless fermion. Note how this lines up with the
 spin chains of Session 2: an $L$-site spin-$\tfrac12$ chain also has a $2^L$-dimensional Hilbert
 space, exactly matching the spinless-fermion count. The reason for this is that a rigorous mapping
 (Jordan-Wigner, which we will meet properly in Session 5) sends spinless fermions to spin-$\tfrac12$
@@ -125,27 +131,18 @@ interaction alone is minimized by the classical alternating pattern $1,0,1,0,\do
 electron every other site. There are exactly \emph{two} such states, related by shifting the pattern
 by one site, and they are degenerate: this is the charge-density wave, and its defining signature
 is that the ground state is twofold degenerate, in sharp contrast with the unique metallic ground
-state at $V=0$.
+state at $V=0$. Figure~\ref{fig:cdw-limits} draws the two limits side by side.
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[c]{0.41\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/many_body_fermions/cdw_schematic_metal.pdf}
-    \caption{Uniform density}
-  \end{subfigure}\hfill
-  \begin{subfigure}[c]{0.49\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/many_body_fermions/cdw_schematic_insulator.pdf}
-    \caption{Alternating occupation}
-  \end{subfigure}
-  \caption{The two solvable limits of Eq.~\eqref{eq:cdw3}, with filled circles marking occupied
-    sites and open circles empty ones. (a) At $V=0$ the chain is a free tight-binding metal at
-    half filling, with the same average density on every site and a unique ground state. (b) As
+  \includegraphics[width=\textwidth]{figures/many_body_fermions/cdw_limits.pdf}
+  \caption{The two solvable limits of Eq.~\eqref{eq:cdw3}, with the occupation of every site drawn
+    as the filling of a cup. (a) At $V=0$ the chain is a free tight-binding metal at half filling,
+    with the same average density $\tfrac12$ on every site and a unique ground state. (b) As
     $V\to\infty$ the hopping becomes irrelevant and the interaction alone selects the alternating
-    $1,0,1,0,\dots$ pattern. Shifting that pattern by one site produces a second state of
-    identical energy, and this twofold degeneracy is the defining signature of the
-    charge-density wave.}
+    $1,0,1,0,\dots$ pattern, in front. Shifting that pattern by one site produces a second state of
+    identical energy, drawn behind it as a ghost, and this twofold degeneracy is the defining
+    signature of the charge-density wave.}
   \label{fig:cdw-limits}
 \end{figure}
 
@@ -226,7 +223,23 @@ occupation $\expval{N}$ against $\mu$: on a plateau, $\mu$ can move freely witho
 because it has not yet exceeded the addition energy in Eq.~\eqref{eq:addwindow}. As $V$ grows, the
 interaction makes it costlier to double up charge on already-crowded sites, $U_c$ grows with it,
 and the plateaus in the $\expval{N}$-versus-$\mu$ curve widen accordingly, exactly what the
-notebook shows you when you compare a weakly and a strongly interacting chain.
+notebook shows you when you compare a weakly and a strongly interacting chain. Figure~\ref{fig:charging}
+draws the staircase for a ring of eight sites.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/many_body_fermions/charging.pdf}
+  \caption{The chemical potential as a gate on the electron number. (a) A ring of eight sites
+    standing on a gate, the term $-\mu N$ of Eq.~\eqref{eq:muterm}, here holding $N=4$
+    electrons, half filling. (b) The particle number of the ground state against $\mu$ for the
+    ring at $V=4t$, computed exactly from Eq.~\eqref{eq:cdw3}, a ring since the ends of an open
+    chain blur the plateaus: every block but the last, which goes on to arbitrarily large $\mu$, is
+    a plateau, the window of Eq.~\eqref{eq:addwindow} in which $N$ stays put, and its width is the
+    charging energy of Eq.~\eqref{eq:charging}. The widest plateau sits at half filling, about $3.8\,t$
+    against less than $3\,t$ for its neighbors, and that width is the charge gap of the
+    charge-density wave.}
+  \label{fig:charging}
+\end{figure}
 
 \begin{notebook}
 Sections ``Energies of an interacting fermionic model as a function of the chemical potential,''
@@ -256,7 +269,24 @@ the interaction is. This flatly contradicts what Session 1's mean-field theory t
 there, the self-consistency loop converges, for any $U>0$ on a bipartite half-filled chain, to a
 finite staggered moment, $m_i = (-1)^i m$ with $m$ growing toward saturation as $U\to\infty$. Exact
 diagonalization and mean-field theory are not just quantitatively different here, they disagree
-about whether the ground state is magnetic at all.
+about whether the ground state is magnetic at all. Figure~\ref{fig:hubbard-moments} puts the two answers side by
+side, and shows where the antiferromagnetism went in the exact one: into the correlations.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/many_body_fermions/hubbard_moments.pdf}
+  \caption{Two answers for the half-filled Hubbard chain of Eq.~\eqref{eq:hub3}. (a) Mean-field
+    theory finds a finite staggered moment $m_i=(-1)^i m$, an arrow on every site. (b) The exact
+    ground state of a chain of six sites at $U=4t$ has no moment on any site, so every electron is
+    drawn without an arrow, and the antiferromagnetism lives instead in the correlation
+    $\expval{\vb S_0\cdot\vb S_j}$ between the first site and site $j$, drawn as an
+    arc whose thickness is its size, blue where it is negative and orange where it is positive, so
+    every arc takes the color of the arrow that panel (a) puts on site $j$.
+    The sign alternates with distance, $-0.54$ for the neighbor and $+0.12$, $-0.17$, $+0.06$,
+    $-0.11$ further out, which is the staggered pattern of panel (a) carried by correlations
+    rather than by moments.}
+  \label{fig:hubbard-moments}
+\end{figure}
 
 The reason for this is an exact symmetry argument. The Hamiltonian
 Eq.~\eqref{eq:hub3} is invariant under any global spin rotation, so it commutes with the total spin
@@ -495,7 +525,23 @@ opposite trends in the very same parameter $U$, growing apart in energy without 
 increases. This is what we mean by \textbf{spin-charge separation}: in the strongly correlated
 one-dimensional Hubbard chain, charge transport is exponentially suppressed, essentially frozen out
 in the thermodynamic limit, while spin transport remains gapless and, in this precise sense, easy,
-even though both live on the very same lattice of electrons.
+even though both live on the very same lattice of electrons. Figure~\ref{fig:spin-charge} draws what the two
+excitations are and how far apart their energies sit.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/many_body_fermions/spin_charge.pdf}
+  \caption{Spin-charge separation in the half-filled Hubbard chain of Eq.~\eqref{eq:hub3}.
+    (a) Behind, an electron removed from the antiferromagnetic chain; in front, the same chain
+    after the hole has hopped three sites to the right. The hole is now an empty site without
+    spin, the holon, carrying the charge, and it has left behind two parallel neighbors where it
+    started, the spinon, carrying the spin, so one removed electron has become two objects that move
+    apart. (b) The two energy scales at $U=10t$, drawn to scale as two towers: adding an electron
+    onto a singly occupied site makes a doubly occupied one, a doublon, which is what
+    $S_c(\omega)$ of Eq.~\eqref{eq:dynamical} reaches and costs about $U/2$, while flipping a spin
+    against its neighbor, what $S_s(\omega)$ reaches, costs about $J=4t^2/U=0.4\,t$.}
+  \label{fig:spin-charge}
+\end{figure}
 
 \begin{notebook}
 Sections ``Dynamical particle-particle correlators in the Hubbard model,'' ``Dynamical spin-spin

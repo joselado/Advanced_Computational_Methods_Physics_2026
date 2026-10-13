@@ -1,0 +1,27 @@
+% Figure 4.5 (Session 4): the AKLT picture of the spin-1 chain and its edge moments.
+% The image is rendered by figures/blender/s4_5_aklt.py; the coordinates of the labels come from
+% figures/blender/out/aklt_anchors.tex. Compile with:
+%   pdflatex aklt.tex ; result moves to ../mps_spin_chains/aklt.pdf
+\documentclass[11pt,tikz,border=0pt]{standalone}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage{xcolor}
+\definecolor{coursedark}{HTML}{1B2A4A}
+\definecolor{costamber}{HTML}{B8620A}
+\newlength{\figw}\setlength{\figw}{16.19cm}   % the text width of the notes (letter, 2.7 cm margins), so labels print at size
+
+\begin{document}
+\begin{tikzpicture}[lbl/.style={font=\small, text=coursedark}]
+  \node[anchor=south west, inner sep=0pt] at (0,0)
+    {\includegraphics[width=\figw]{../blender/out/aklt.jpg}};
+  \input{../blender/out/aklt_anchors.tex}
+  \node[lbl, font=\normalsize, anchor=west] at (a) {(a)};
+  \node[lbl, font=\normalsize, anchor=west] at (b) {(b)};
+  \node[lbl, font=\normalsize, anchor=west] at (c) {(c)};
+  \node[lbl, anchor=south] at (aS1) {$S=1$};
+  \node[lbl, anchor=north] at (ahalf) {two spin-$\tfrac12$};
+  \node[lbl, anchor=south] at (bsing) {singlet};
+  \node[lbl, anchor=north] at (blbl) {valence bonds};
+  \node[lbl, anchor=north] at (cleft) {\normalsize $-\frac{1}{2}$};
+  \node[lbl, anchor=north] at (cright) {\normalsize $-\frac{1}{2}$};
+\end{tikzpicture}
+\end{document}
