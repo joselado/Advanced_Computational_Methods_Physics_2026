@@ -1,0 +1,3 @@
+# Only the files the TikZ overlays need are kept: the flattened JPEG and the anchors.
+*.png
+*.log
