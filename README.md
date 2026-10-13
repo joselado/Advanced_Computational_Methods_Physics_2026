@@ -56,7 +56,7 @@ Each link opens the film in a player on [one page](https://joselado.github.io/Ad
 - [Film 5.1: Fermions as spins: the Jordan-Wigner string](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_1_jordan_wigner)
 - [Film 5.2: A charge density wave at a hundred sites](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_2_cdw_hundred_sites)
 - [Film 5.3: When is mean-field theory valid? The correlation entropy](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_3_correlation_entropy)
-- [Film 5.4: Inside the solver: the DMRG sweep](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_4_dmrg_sweep)
+- [Film 5.4: The density matrix renormalization group](https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/#s5_4_dmrg_sweep)
 
 ## Lecture recordings
 Recordings of the video lectures, from the previous edition of the course
