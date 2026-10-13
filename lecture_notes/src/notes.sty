@@ -38,8 +38,15 @@
 
 \titleformat{\section}{\Large\bfseries\color{coursedark}\raggedright}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries\color{coursedark}\raggedright}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{coursedark}\raggedright}{\thesubsubsection}{0.6em}{}
 \titlespacing*{\section}{0pt}{1.4em}{0.6em}
 \titlespacing*{\subsection}{0pt}{1.1em}{0.4em}
+\titlespacing*{\subsubsection}{0pt}{0.9em}{0.3em}
+
+% Every session is a numbered section, its parts are subsections and their pieces are
+% subsubsections, so the table of contents has the same three levels in every session.
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -55,9 +62,11 @@
 % Usage: \notestitle{Session N}{Title}{notebook-file.ipynb}{one-line prerequisite note}
 \newcommand{\notestitle}[4]{%
   \sessiontitle{#2}%
+  \refstepcounter{section}%
+  \phantomsection\addcontentsline{toc}{section}{\protect\numberline{\thesection}#2}%
   \begin{center}
     {\color{coursedark}\Large\bfseries PHYS-E0510 -- Advanced Computational Methods in Physics D}\\[0.3em]
-    {\color{courseaccent}\large #1: #2}\\[0.6em]
+    {\color{courseaccent}\large #1\\[0.2em] #2}\\[0.6em]
   \end{center}
   \begin{tcolorbox}[
       colback=coursedark!5, colframe=coursedark!60, boxrule=0.4pt,

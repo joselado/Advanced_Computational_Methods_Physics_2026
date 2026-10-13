@@ -8,3 +8,7 @@ notebook cells follow its section 4.4: the `##` titles, one-line intros and quiz
 the lecturer's own and stay as they are, and the explanatory paragraph under each intro says
 what the code does, gives the one idea needed to read the plot, and points at what to look at,
 without answering the quiz bullets that follow it.
+
+The prose of the lecture notes (`lecture_notes/src/*.tex`) follows `lecture_notes/writing_style.md`,
+which wins over the AQM `VOICE.md` where the two disagree: simple English written by a non-native
+condensed matter physicist, no colons, semicolons or em-dashes in prose.
