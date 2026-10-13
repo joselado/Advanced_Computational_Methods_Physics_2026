@@ -6,20 +6,21 @@
   {mps\_quantum\_magnets.ipynb}{exact diagonalization of the Heisenberg model (Session 2)}
 
 \section*{Contents and goals}
-Last session we solved the Heisenberg model exactly, by brute-force diagonalization, and it
-worked beautifully: gaps, level crossings, correlators, all of it came out of the numerics with
-no approximation at all. But we also ran straight into a wall. The Hilbert space of $L$
-spin-$\tfrac12$'s has dimension $2^L$, and that number simply refuses to be tamed: by around
-$L\sim 20$ spins, even a very good computer has run out of memory, and we are nowhere near the
-thermodynamic limit where the genuinely interesting physics, quantum phase transitions,
-fractionalization, the emergence of gaps, actually lives. So the question for today is very
+In the last two sessions we solved quantum many-body problems exactly, first the Heisenberg chain
+in the spin basis and then the spinless and Hubbard chains in the fermionic basis, and it worked:
+gaps, level crossings, correlators, all of it came out of the numerics with no approximation at
+all. But both times we ran straight into the same wall. The Hilbert space of $L$
+spin-$\tfrac12$'s has dimension $2^L$ (and $4^L$ for spinful fermions), and that number simply
+refuses to be tamed: by around $L\sim 20$ spins, even a very good computer has run out of memory,
+and we are nowhere near the thermodynamic limit where the interesting physics, quantum phase
+transitions, fractionalization, the emergence of gaps, actually lives. So the question for today is very
 concrete: is there a way to represent the many-body wavefunction that does not cost us
 exponentially much, at least for the states we actually care about? The answer is yes, and it
 goes by the name of matrix product states (MPS), the simplest member of the broader family of
 tensor network methods. We will see why this representation is efficient, what makes it work so
 well specifically in one dimension, how to tell numerically whether we trust it, and then we will
-spend the second half of the session simply redoing session 2's Heisenberg-model story, but now
-at $40$ to $100+$ spins, large enough to see thermodynamic-limit physics we could only guess at
+spend the second half of the session simply redoing Session 2's Heisenberg-model story, but now
+at $40$ to $100$ spins and more, large enough to see thermodynamic-limit physics we could only guess at
 before.
 
 \section*{Learning outcomes}
@@ -31,7 +32,7 @@ By the end of this session, you should be able to:
     in one dimension, and where they are expected to fail (2D, volume-law states).
   \item Assess the convergence of a variational MPS calculation using energy fluctuations, and use
     entanglement entropy as a diagnostic for a quantum phase transition.
-  \item Run MPS calculations at $40$--$100+$ spins to distinguish the gapless spin-$\tfrac12$
+  \item Run MPS calculations at $40$ to $100$ spins and more to distinguish the gapless spin-$\tfrac12$
     Heisenberg chain from the gapped, fractionalized spin-$1$ Haldane phase.
 \end{itemize}
 
@@ -103,27 +104,27 @@ Section~\ref{sec:entanglement}, but the short answer, which is really the whole 
 has a Session 4, is: yes, in one dimension.
 
 \subsection{Cost: exact diagonalization versus matrix product states}
-It is worth just looking at what this buys us in practice before we justify it theoretically. If
+Let us first look at what this buys us in practice, before we justify it theoretically. If
 we solve the Heisenberg chain $\Ham_{\mathrm{Heis}} = J\sum_n \vb S_n\cdot\vb S_{n+1}$ by exact
 diagonalization, the time to find the ground state grows exponentially with $L$, simply because we
 are manipulating vectors and matrices of size $2^L$. If instead we solve it variationally over the
 matrix product state ansatz of Eq.~\eqref{eq:mpsansatz}, at fixed bond dimension the cost grows
-close to linearly in $L$. The two curves cross somewhere around $L\sim 14$--$16$: below that,
+close to linearly in $L$. The two curves cross somewhere around $L\sim 14$ to $16$: below that,
 exact diagonalization is actually faster (there is no point using a variational method when the
 exact answer is cheap), but above it, matrix product states win, and they keep winning by an
 ever-growing margin. Concretely, systems of $50$, $70$, even $80$ spins become tractable on a
 laptop, in seconds, while exact diagonalization would need more memory than exists on the
-largest supercomputers once you pass $L\sim 40$--$50$. That gap in scaling, exponential versus
-polynomial, is the entire reason this session exists.
+largest supercomputers once you pass $L\sim 40$ to $50$. That gap in scaling, exponential versus
+polynomial, is what the rest of the session builds on.
 
 \begin{notebook}
-Sections ``Energy of the Heisenberg model as a function of the system size'' and ``Near lineal
+Sections ``Energy of the Heisenberg model as a function of the system size'' and ``Near linear
 scaling with system size with matrix product states.'' Plot the ground-state energy per site
 against $L$ and see it converge toward a thermodynamic-limit value; check it against the exact
 Bethe-ansatz result $e_0 = J\big(\tfrac14-\ln2\big)\approx-0.4431J$ as an independent convergence
 check. Then time exact diagonalization against the matrix product state solver as you increase
 $L$, and locate for yourself the crossover system size beyond which the tensor network method
-becomes the only game in town.
+becomes the only option.
 \end{notebook}
 
 \section{How good is the variational state? Convergence diagnostics}
@@ -186,7 +187,7 @@ same fluctuation tolerance.
 \end{notebook}
 
 \section{Low-energy excitations and level crossings}
-Before we build up the full entanglement-entropy machinery, it is worth seeing what matrix product
+Before we build up the full entanglement-entropy machinery, let us see what matrix product
 states buy us physically, using the same first excited state we just discussed as a diagnostic.
 
 Take the Heisenberg chain and compute the matrix element $\bra{0}S_n^x\ket{1}$ between the ground
@@ -194,10 +195,10 @@ state and the first excited state, as a function of the site $n$ where we act wi
 operator. Physically, this tells us the amplitude for creating the lowest-energy spin excitation
 at site $n$. For the spin-$\tfrac12$ chain, this profile looks like the ground-state wavefunction
 of a particle in a box: maximal amplitude at the center of the chain, decaying smoothly toward
-both edges. This is not a coincidence: it is the same lowest-triplet magnon that dispersed as a
-plane wave on Session 2's periodic dimer and small chains, now standing on an \emph{open} chain,
-where the boundaries force it into a standing wave with a node at each edge instead of a running
-wave. This is exactly the behavior of a delocalized, bulk spin excitation, and it is our
+both edges. This is the particle-in-a-box picture we already met in the dynamical correlators of
+Session 2: the lowest spin excitation is a wave spread over the whole chain, and on an \emph{open}
+chain the boundaries force it into a standing wave that vanishes at both edges. This is exactly the
+behavior of a delocalized, bulk spin excitation, and it is our
 first hint that the low-energy physics of the spin-$\tfrac12$ chain lives in the bulk. We will
 come back to a sharp contrast with this profile, for spin-$1$, once we have enough system size to
 make the comparison convincing (Section~\ref{sec:fractionalization}).
@@ -217,7 +218,7 @@ arbitrarily close in energy to the ground state at any nonzero $B$.
 Sections ``Low energy excitations of a Heisenberg model'' and ``Level crossings as a function of
 the magnetic field with matrix product states.'' Reproduce the particle-in-a-box matrix-element
 profile, and separately track the ground-state total spin as a function of $B$ for $L=2,4,10,30$:
-watch the discrete staircase of session 2 smooth out into what will look like a continuous ramp
+watch the discrete staircase of Session 2 smooth out into what will look like a continuous ramp
 once $L$ is large enough.
 \end{notebook}
 
@@ -247,7 +248,7 @@ met already in Session 1,
 No choice of $\ket{\phi}_A$, $\ket{\chi}_B$ reproduces this: try to write it as a product and you
 immediately find you need two different terms with opposite relative sign, which a single product
 cannot generate. We call such a state \textbf{entangled}. This is precisely the distinction that
-separates classical states from genuinely quantum ones, and we need a way to quantify \emph{how}
+separates classical states from quantum ones, and we need a way to quantify \emph{how}
 entangled a state is, not just whether it is or is not.
 
 \subsection{The reduced density matrix and the von Neumann entropy}
@@ -284,7 +285,7 @@ generic state, $r$ can be as large as $d^{\min(n,L-n)}$, exponential in the bloc
 matrix product state built as in Eq.~\eqref{eq:mpsansatz}, the sum over the bond index at position
 $n$ runs only over $\chi_n$ values by construction, so the coefficient tensor manifestly
 factorizes through a $\chi_n$-dimensional index: the Schmidt rank at that cut can be at most
-$\chi_n$. Plugging the Schmidt form into Eqs.~\eqref{eq:vonNeumann} gives
+$\chi_n$. Plugging the Schmidt form into Eq.~\eqref{eq:vonNeumann} gives
 $\rho_A = \sum_\alpha \lambda_\alpha^2 \ket{\alpha}\bra{\alpha}$, so
 \begin{equation}
   S_A = -\sum_{\alpha=1}^{r} \lambda_\alpha^2 \ln \lambda_\alpha^2 \;\le\; \ln r \;\le\; \ln \chi_n,
@@ -313,7 +314,7 @@ given problem reduces to: how does $S_A$ behave as we grow the system?
 \subsection{The area law, and why one dimension is cheap}
 Here is the key physical fact. For the ground state of a \emph{gapped}, local, one-dimensional
 Hamiltonian, correlations decay exponentially beyond some correlation length $\xi$, and it turns
-out (this is the celebrated area-law theorem for 1D gapped systems) that $S_A$ \emph{saturates} to
+out (this is what is called the area law, proven for gapped one-dimensional systems) that $S_A$ \emph{saturates} to
 an $L$-independent constant as soon as the block $A$ is a few $\xi$ away from both its boundary and
 the far end of the chain. Only the physics living within $\sim\xi$ of the cut contributes to the
 entanglement; everything deep in the interior of $A$ or $B$ is irrelevant to it. For a
@@ -364,19 +365,18 @@ entire row, so $\chi$ needs to grow \emph{exponentially} with the linear dimensi
 keep the truncation error fixed. Matrix product states can still be used in two dimensions (this is
 how some of the best available numerics for the 2D Hubbard model or frustrated triangular and
 kagome-lattice antiferromagnets are obtained), but only by working on narrow cylinders and paying
-for a much larger $\chi$ than a comparable 1D calculation would need. We will not pursue 2D tensor
-networks further in this course; this is slides-only material, flagged here because it explains
-directly why everything else in this session is specific to $d=1$.
+for a much larger $\chi$ than a comparable 1D calculation would need. We will not do
+two-dimensional calculations in this course; the point of the argument is to explain why everything
+else in this session is specific to one dimension.
 
 \paragraph{Where matrix product states struggle even in 1D.} Bounded, area-law entanglement is a
 property of \emph{ground states} of \emph{gapped or mildly critical, local} Hamiltonians. It fails,
-and matrix product states fail along with it, in a few important situations worth knowing about
-even though we will not explore them numerically here: entanglement grows \emph{linearly} in time
+and matrix product states fail along with it, in a few situations that we will not compute in this
+course but that you should have in mind: entanglement grows \emph{linearly} in time
 under quantum quench dynamics (so time evolution with matrix product states is only trustworthy up
 to some maximal time set by $\chi$), highly excited states deep in the many-body spectrum typically
 violate the area law entirely, and long-range interactions effectively reintroduce
-higher-dimensional connectivity even in a nominally 1D chain. This is again slides-only material,
-not covered in the companion notebook.
+higher-dimensional connectivity even in a nominally 1D chain.
 
 \section{Boundary conditions}
 \label{sec:bc}
@@ -426,7 +426,7 @@ check numerically that the periodic curve sits roughly at twice the open one.
 
 \subsection{The transverse-field Ising model}
 \label{sec:tfi}
-Entanglement entropy is not just a bookkeeping device for tensor network cost, it is a genuine
+Entanglement entropy is not just a bookkeeping device for tensor network cost, it is a
 physical diagnostic in its own right, and nowhere is this cleaner than at a quantum phase
 transition. Consider the transverse-field Ising chain,
 \begin{equation}
@@ -441,22 +441,22 @@ and the ground state is again classical, this time fully polarized along $x$,
 $\ket{\to\to\cdots\to}$. Both limits are separable product states, so by
 Eq.~\eqref{eq:vonNeumann} their entanglement entropy is exactly zero. Somewhere in between,
 $\Ham_{\mathrm{TFI}}$ must interpolate between these two very different classical orders, and it
-does so through a genuine quantum phase transition. (The exact solution of this model comes from
+does so through a quantum phase transition. (The exact solution of this model comes from
 mapping spins onto free fermions via a Jordan-Wigner transformation, a construction we will meet
 properly in Session 5; it places the critical point, for the normalization used here, at
 $B_x = J/2$.)
 
 \subsection{The entanglement peak and the order parameter}
 Since both classical limits have zero entanglement entropy, and the state in between them is
-genuinely quantum (a superposition that cannot be reduced to a single classical spin
+quantum (a superposition that cannot be reduced to a single classical spin
 configuration), $S_A$ has to rise away from zero somewhere in the middle and come back down, and
 the natural guess is that it peaks exactly at the phase transition. This is precisely what the
 numerics show: computing $S_A$ at the central bond of a long chain as a function of $B_x/J$, we
 see it vanish at both $B_x=0$ and $B_x\to\infty$, with a pronounced maximum sitting right at the
 critical point. For a chain of $\sim 100$ spins, close enough to the thermodynamic limit, that peak
-sits at $B_x/J = 0.5$, exactly the exact value quoted above.
+sits at $B_x/J = 0.5$, the exact value quoted above.
 
-We can cross-check this against a completely independent, and perhaps more familiar, diagnostic:
+We can cross-check this against a completely independent, and more familiar, diagnostic:
 the order parameter itself, $\expval{S_n^z}$. For $B_x < 0.5$, the ground state retains a finite
 $\expval{S_n^z}$, the ferromagnetic order parameter of the Ising phase; for $B_x>0.5$, quantum
 fluctuations wash it out completely and $\expval{S_n^z}\to 0$, leaving only $\expval{S_n^x}\ne0$.
@@ -510,7 +510,7 @@ an exponentially decaying response instead,
   \expval{S_n^z} \sim e^{-|n|/\xi},
   \label{eq:expdecay}
 \end{equation}
-with a correlation length $\xi$ that shrinks as the dimerization strengthens. This is a beautiful,
+with a correlation length $\xi$ that shrinks as the dimerization strengthens. This is a
 direct numerical demonstration of exactly the physics we anticipated in
 Section~\ref{sec:entanglement}: a finite gap sets a finite correlation length, and it is that same
 $\xi$ that controls both the exponential decay of local response \emph{and} the saturation of the
@@ -563,14 +563,14 @@ while the undimerized limit recovers the slow power law.
 Now apply exactly the same correlator to the spin-$\tfrac12$ and spin-$1$ Heisenberg models,
 \emph{without} any dimerization, just plain nearest-neighbor exchange, $\Ham =
 J\sum_n \vb S_n\cdot\vb S_{n+1}$ for $S=\tfrac12$ and $S=1$ respectively. Here is where system size
-really matters. If we only had access to exact diagonalization, capping out around $L\sim15$--$16$
+really matters. If we only had access to exact diagonalization, capping out around $L\sim15$ to $16$
 for spin-$1$, we might come away thinking the spin-$1$ correlator is actually the \emph{larger} of
-the two at those distances. But push to $L\sim 40$--$50$ spins, and the picture flips completely:
+the two at those distances. But push to $L\sim 40$ to $50$ spins, and the picture flips completely:
 the spin-$\tfrac12$ correlator keeps decaying as a slow power law all the way out, while the spin-$1$
 correlator, once $n$ exceeds its (much shorter) correlation length, drops off exponentially. The
 crossover only becomes visible once the system is comparable to, or larger than, that correlation
-length, which is exactly why small chains give a misleading impression: spin-$1$ genuinely is
-gapped, spin-$\tfrac12$ genuinely is not, but you need $L$ large enough to see it.
+length, which is exactly why small chains give a misleading impression: spin-$1$ is
+gapped, spin-$\tfrac12$ is not, but you need $L$ large enough to see it.
 
 \subsection{Fractionalization in the spin-1 chain}
 Here is the sharpest version of the contrast. Take an open spin-$1$ chain and apply a small
@@ -611,7 +611,7 @@ spin-$\tfrac12$ to each end of the spin-$1$ chain for this last comparison, prec
 emergent edge modes have somewhere to combine into a conventional, non-fractional total spin.
 \end{notebook}
 
-\section*{Summary}
+\section*{Closing summary}
 \begin{itemize}[nosep]
   \item Matrix product states rewrite the exponentially many wavefunction coefficients
     $C(s_1,\ldots,s_L)$ as a chain of small matrices, Eq.~\eqref{eq:mpsansatz}; the number of
@@ -630,15 +630,15 @@ emergent edge modes have somewhere to combine into a conventional, non-fractiona
   \item The entanglement entropy is itself a physical diagnostic: it peaks exactly at the quantum
     phase transition of the transverse-field Ising model, cleanly resolved once $L$ is close to the
     thermodynamic limit.
-  \item Redoing Session 2's Heisenberg-chain program at $40$--$100+$ spins turns qualitative hints
+  \item Redoing Session 2's Heisenberg-chain program at $40$ to $100$ spins and more turns qualitative hints
     into sharp, converged results: power-law versus exponential correlators, a closing versus
     saturating many-body gap, and a clean separation between the gapless spin-$\tfrac12$ chain and
     the gapped, fractionalized spin-$1$ chain with its emergent spin-$\tfrac12$ edge modes.
 \end{itemize}
 
 Matrix product states solved our $2^L$ problem for spin chains, but everything we did here was
-built directly on top of the spin language of Sessions 2 and 3. Next session we go back to
-fermions, connect them to spins through the Jordan-Wigner mapping we only alluded to in
+written in the spin language of Session 2. Next session we go back to the fermions of Session 3,
+connect them to spins through the Jordan-Wigner mapping we only alluded to in
 Section~\ref{sec:tfi}, and lay out the general tensor-network algorithm, the actual
 variational sweep that produces the matrices $M_n^{s_n}$ we have been taking for granted throughout
 this session.

@@ -21,11 +21,11 @@
     % MPS row (physical legs point up, joined to the MPO's column legs)
     \foreach \x in {0,1.5,3.0,4.5} { \node[mps] at (\x,0) {}; }
     \draw[wire] (0,0) -- (4.5,0);
-    \node[idx, anchor=north] at (0.75,-0.12) {$D$};
+    \node[idx, anchor=north] at (0.75,-0.12) {$\chi$};
     % MPO row
     \foreach \x in {0,1.5,3.0,4.5} { \node[mpo] at (\x,1.5) {}; }
     \draw[wire] (0,1.5) -- (4.5,1.5);
-    \node[idx, anchor=south] at (0.75,1.62) {$D_W$};
+    \node[idx, anchor=south] at (0.75,1.62) {$\chi_W$};
     % joined physical legs and free output legs
     \foreach \x in {0,1.5,3.0,4.5} {
       \draw[wire] (\x,0.275) -- (\x,1.225);
@@ -34,21 +34,21 @@
     % merged-bond highlight between columns 2 and 3
     \draw[courseaccent, dashed, line width=0.7pt, rounded corners=3pt]
       (1.95,-0.30) rectangle (2.55,1.80);
-    \node[idx, text=courseaccent, anchor=north] at (2.25,-0.42) {merged bond $D\cdot D_W$};
+    \node[idx, text=courseaccent, anchor=north] at (2.25,-0.42) {merged bond $\chi\chi_W$};
     % SVD arrow
     \draw[->, courseaccent, line width=0.9pt] (5.35,0.75) -- (6.55,0.75);
     \node[idx, text=courseaccent, anchor=south] at (5.95,0.90) {SVD on every bond};
-    \node[idx, text=courseaccent, anchor=north] at (5.95,0.60) {keep largest $D$};
+    \node[idx, text=courseaccent, anchor=north] at (5.95,0.60) {keep largest $\chi$};
     % compressed result
     \foreach \x in {7.5,9.0,10.5,12.0} {
       \node[mps] at (\x,0.75) {};
       \draw[wire] (\x,1.025) -- (\x,1.55);
     }
     \draw[wire] (7.5,0.75) -- (12.0,0.75);
-    \node[idx, anchor=north] at (8.25,0.60) {$D$};
+    \node[idx, anchor=north] at (8.25,0.60) {$\chi$};
     \node[lbl, anchor=north] at (6.1,-1.15)
       {(a) applying $\mathcal{H}$ multiplies the bond dimensions,\\
-       an SVD on every bond truncates back to $D$};
+       an SVD on every bond truncates back to $\chi$};
   \end{scope}
 
   % ================= panel (b): the DMRG sweep
@@ -68,10 +68,10 @@
     \draw[wire] (3.35,0) -- (4.175,0);
     \draw[wire] (4.825,0) -- (5.65,0);
     \draw[wire] (4.5,-0.325) -- (4.5,-0.85);
-    \node[idx, anchor=north] at (4.5,-0.95) {$\sigma_i$};
+    \node[idx, anchor=north] at (4.5,-0.95) {$s_i$};
     % local eigenproblem annotation, diagonal leader
     \node[idx, text=courseaccent, anchor=west] at (5.35,1.15)
-      {$H_{\mathrm{eff}}(i)\,A^{\sigma_i}=\lambda\,A^{\sigma_i}$};
+      {$H_{\mathrm{eff}}(i)\,M_i^{s_i}=\lambda\,M_i^{s_i}$};
     \draw[courseaccent, line width=0.6pt] (5.30,1.10) -- (4.72,0.30);
     % sweep arrow
     \draw[<->, courseaccent, line width=0.9pt] (0.5,-1.45) -- (8.5,-1.45);

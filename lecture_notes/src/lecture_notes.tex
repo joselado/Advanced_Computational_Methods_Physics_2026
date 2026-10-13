@@ -12,7 +12,7 @@
 \vspace{0.8cm}
 {\Large\color{courseaccent} Lecture Notes\par}
 \vspace{0.3cm}
-{\large Sessions 1--5\par}
+{\large Sessions 1 to 5\par}
 \vspace{2cm}
 {\large Jose Lado\par}
 \vspace{0.5cm}
@@ -27,57 +27,48 @@ prerequisites.\par}
 \section*{How this course is organized}
 \addcontentsline{toc}{section}{\textbf{How this course is organized}}
 
-Every topic in this course comes to you in four different forms, and they are meant to be used
-together rather than as substitutes for one another.
+Every session of this course comes in five pieces, and they are meant to be used together rather
+than one instead of another. The recording is the lecture itself, with the derivations done on the
+fly and the questions that come up along the way. The slides are the sequence of definitions,
+figures and equations in the order they were presented, which makes them the quickest way to find
+your place in a recording or to go over a session before the exam. These lecture notes follow the
+same sessions in the same order, but write the physics out in connected prose, with the steps a
+slide compresses into one line carried through by hand, so you can read them instead of watching a
+session a second time, or next to the slides to fill in what a bullet point skips. The Jupyter
+notebook of each session, named in the box under the session title and pointed at again in every
+\emph{Computational companion} box inside the text, is where the physics is actually computed:
+nothing there is a fixed figure, and you are meant to run the cells, change the parameters and see
+what happens. Finally, the exercise shorts
+(\url{https://joselado.github.io/Advanced_Computational_Methods_Physics_2026/exercise_shorts/}) are
+four short silent films per session, one to two minutes each, where we see one idea of the session
+with every number on screen computed with the same codes as the notebooks.
 
-\begin{itemize}[nosep]
-  \item \textbf{Recordings.} Each session is recorded; this is the lecture itself, delivered
-    live, with all the informal asides, questions, and derivations on the fly that never quite
-    make it into a written document.
-  \item \textbf{Slides.} The slide deck for each session is the visual backbone of the lecture:
-    the sequence of definitions, figures, and equations in the order they were actually
-    presented. Use it to navigate a recording or to jog your memory before an exam.
-  \item \textbf{Lecture notes.} What you are reading now. The notes follow the same session
-    structure as the recordings and slides, but write out the physics in full, connected
-    prose, with every derivation carried through by hand rather than compressed onto a slide.
-    Read them either instead of watching a session again, or alongside the slides to fill in the
-    steps a bullet point necessarily skips.
-  \item \textbf{Jupyter notebooks.} Every computational session has a companion notebook,
-    referenced in the title box at the start of each session below and flagged again wherever a
-    \emph{Computational companion} box appears in the margin. This is where the physics actually
-    gets computed: nothing here is a canned figure, you are meant to run the cells yourself,
-    change parameters, and watch what happens.
-\end{itemize}
-
-None of these four are complete on their own. The recordings and slides give you the narrative
-and the intuition; the lecture notes give you the derivations you can check line by line; the
-notebooks give you the numerics to build intuition none of the others can give you by
-themselves. A good way to work through a session is to watch the recording once, read the
-matching notes with the notebook open alongside it, and then go back and tinker with the
-notebook until the results stop feeling like something that just happened on someone else's
-screen.
+None of these pieces is complete on its own: the recordings and slides give the narrative and the
+intuition, the notes give derivations you can check line by line, and the notebooks give the
+numerics, which build an intuition that none of the others can. A good way to work through a
+session is to watch the recording once, read the matching notes with the notebook open next to
+them, and then go back to the notebook and change things until the results stop feeling like
+something that happened on someone else's screen.
 
 \subsection*{The computational libraries}
 
-All of the numerics in this course are delegated to two Python libraries written and maintained
-by the instructor, rather than to code written from scratch inside the notebooks. Both need to be
-installed separately before the notebooks will run; see the notebooks' first cell for the exact
-environment variables they expect.
+All the numerics of the course are done with two Python libraries, rather than with code written
+from scratch inside the notebooks, and both have to be installed before the notebooks run; the first
+cell of each notebook says which environment variables they expect.
 
 \begin{itemize}[nosep]
-  \item \textbf{\texttt{pyqula}} (\url{https://github.com/joselado/pyqula}) handles
-    single-particle and mean-field electronic structure: tight-binding Hamiltonians, band
-    structures, and the self-consistent Hubbard/CDW calculations of Session 1. It is what
-    \texttt{classical\_magnetism.ipynb} is built on.
-  \item \textbf{\texttt{dmrgpy}} (\url{https://github.com/joselado/dmrgpy}) handles everything
-    many-body: exact diagonalization of spin and fermionic Hamiltonians, and the matrix-product-state
-    and DMRG calculations of the later sessions. It is what the quantum-magnetism,
-    interacting-fermion, and MPS notebooks are built on.
+  \item \textbf{\texttt{pyqula}} (\url{https://github.com/joselado/pyqula}) does single-particle and
+    mean-field electronic structure: tight-binding Hamiltonians, band structures, and the
+    self-consistent Hubbard and charge-density-wave calculations of Session 1, whose notebook,
+    \texttt{classical\_magnetism.ipynb}, is built on it.
+  \item \textbf{\texttt{dmrgpy}} (\url{https://github.com/joselado/dmrgpy}) does the quantum
+    many-body calculations: exact diagonalization of spin and fermionic Hamiltonians, and the
+    matrix-product-state and DMRG calculations of the later sessions, so the notebooks of Sessions 2
+    to 5 are built on it.
 \end{itemize}
 
-Both libraries are used purely as tools here: you are not expected to read their source to follow
-this course, only to call the functions the notebooks show you. If you do want to look under the
-hood, the reference documentation collected for this course is a good place to start.
+Both libraries are used here as tools: you do not need to read their source to follow the course,
+only to call the functions the notebooks show you.
 
 \clearpage
 \tableofcontents

@@ -82,7 +82,7 @@ meet three flavors of local degree of freedom built this way:
     now the operators are \emph{bosonic}: they commute on different sites instead of
     anticommuting. As we will see in Section~\ref{sec:strongcoupling}, a local spin emerges
     naturally from a spinful fermion once we project out double occupancy and the empty state.
-    This is the origin of what is called spin--charge separation.
+    This is the origin of what is called spin-charge separation.
 \end{itemize}
 
 \begin{notebook}
@@ -97,8 +97,8 @@ tunneling-spectroscopy or ARPES experiment actually measures.
 
 \section{Worked example: the tight-binding dimer}
 \label{sec:dimer}
-Before we add any interactions, it is worth solving the smallest possible chain by hand, since
-we will keep coming back to it. Take $L=2$ sites with hopping $t$, and let us include spin from
+Before we add any interactions, let us solve the smallest possible chain by hand, since we will
+keep coming back to it. Take $L=2$ sites with hopping $t$, and let us include spin from
 the start, so each site can hold a spin-up and a spin-down electron independently:
 \begin{equation}
   \Ham_0 = -t \sum_\sigma \left(\cre{0\sigma}\ann{1\sigma} + \cre{1\sigma}\ann{0\sigma}\right).
@@ -148,7 +148,7 @@ opposite spins sitting on the \emph{same} site:
     + U \sum_i n_{i\up} n_{i\dn}, \qquad n_{i\sigma} \equiv \cre{i\sigma}\ann{i\sigma}.
   \label{eq:hubbard}
 \end{equation}
-Physically, this local repulsion is what an on-site electrostatic (Coulomb) interaction reduces
+Physically, this local repulsion is what an onsite electrostatic (Coulomb) interaction reduces
 to once screening is included, and it is the minimal Hamiltonian we need for \textbf{magnetism}.
 Magnetic order breaks time-reversal and spin-rotational symmetry: the exact Hamiltonian is
 invariant under any spin rotation, but its ground state is not, and if you apply time reversal
@@ -167,12 +167,12 @@ here the broken symmetry is the lattice's \emph{translational} symmetry, and cha
 one sublattice while it is depleted on the other.
 
 \subsection{Where do $U$ and $V$ come from physically?}
-We will treat $U$ and $V$ as given parameters for the rest of the course, but it is worth
-pausing on where they actually come from, because that also explains why both repulsive and
+We will treat $U$ and $V$ as given parameters for the rest of the course, but let us pause on
+where they actually come from, because that also explains why both repulsive and
 attractive effective interactions are physically reasonable.
 \begin{itemize}[nosep]
   \item \textbf{Direct electrostatics.} Screened Coulomb repulsion between electrons is always
-    present, and it is always repulsive. Its on-site piece is what gives us $U$; its
+    present, and it is always repulsive. Its onsite piece is what gives us $U$; its
     longer-range piece, truncated to nearest neighbors, is what gives us $V$.
   \item \textbf{Quasiparticle-mediated interactions.} If we integrate out some other bosonic
     degree of freedom that couples to the electron density or spin, lattice vibrations
@@ -204,14 +204,14 @@ approximation away from that limit):
     - \expval{n_{i\up}}\expval{n_{i\dn}}.
 \end{equation}
 If we define the local magnetization as $m_i \equiv \expval{n_{i\up}} - \expval{n_{i\dn}}$, the
-Hubbard interaction turns into an effective, spin-dependent on-site potential:
+Hubbard interaction turns into an effective, spin-dependent onsite potential:
 \begin{equation}
   \HMF = -\sum_{ij,\sigma} t_{ij}\,\cre{i\sigma}\ann{j\sigma}
     - \frac{U}{2}\sum_i m_i\, \sigma_z + \mathrm{const.}
   \label{eq:mfham}
 \end{equation}
-where $\sigma_z=\pm1$ for $\sigma=\up,\dn$, so the on-site term reads $-\tfrac U2 m_i\sigma$ site by
-site. So spin-up electrons now see a shifted on-site energy $-Um_i/2$, and spin-down electrons see
+where $\sigma_z=\pm1$ for $\sigma=\up,\dn$, so the onsite term reads $-\tfrac U2 m_i\sigma$ site by
+site. So spin-up electrons now see a shifted onsite energy $-Um_i/2$, and spin-down electrons see
 $+Um_i/2$. This splitting, which is generated entirely by the interaction, is what we call the
 \textbf{exchange splitting}. More generally, if we also keep expectation values like
 $\expval{\cre{i\up}\ann{i\dn}}$, we let $\HMF$ describe non-collinear magnetization, with
@@ -247,7 +247,8 @@ to below.
 \end{figure}
 
 \subsection{Mean-field theory as a variational method}
-There is an equivalent, and arguably more illuminating, way to think about all of this. Suppose
+\label{sec:variational}
+There is an equivalent way to think about all of this, and in a way a more useful one. Suppose
 we restrict the many-body ground state to be a single Slater determinant, $\ket{\Psi} =
 \cre{a_1}\cre{a_2}\cdots\vac$, and we minimize $\expval{\Ham}$ over the choice of single-particle
 orbitals $\{a_n\}$. Since $\HMF$ depends on $\expval{n_{i\sigma}}$, and $\expval{n_{i\sigma}}$
@@ -291,7 +292,7 @@ finite $U$ they are physically distinct states, one metallic and one insulating.
 Section ``The interacting Hubbard dimer.'' Compare a ferromagnetic-seeded and an
 antiferromagnetic-seeded self-consistent run on the dimer of Section~\ref{sec:dimer}, now with
 $U>0$ switched on, and check numerically which solution has the lower variational energy and how
-the gap between them scales with $U$. It is also worth revisiting ``Gap opening in the Hubbard
+the gap between them scales with $U$. Then go back to ``Gap opening in the Hubbard
 model'' with a ferromagnetic initialization, to see this initial-guess dependence show up
 directly in the spectrum.
 \end{notebook}
@@ -302,7 +303,7 @@ As $U/t \to \infty$, something nice happens to the local moment $\expval{n_{i\up
 \expval{n_{i\dn}}$: it saturates, in magnitude, to $1$ on every site. Double occupancy and empty
 sites become energetically forbidden, and every site ends up carrying exactly one localized
 electron. This is the regime where the physics is no longer best described by itinerant
-fermions, but by \emph{spins}, and it is worth understanding in detail why.
+fermions, but by \emph{spins}, and let us now see in detail why.
 
 \subsection{The Hubbard dimer and its low-energy manifold}
 Take our two-site dimer again, with hopping $t$, interaction $U$, and two electrons total (so we
@@ -322,7 +323,7 @@ has quietly turned into a spin problem.
 The only term that connects the two manifolds is the hopping $t$, and symmetry alone (there is
 no spin-rotation breaking anywhere in $\Ham_{\mathrm{Hub}}$) already tells us that the low-energy
 effective Hamiltonian has to be proportional to $\vb S_1\cdot\vb S_2$ at leading order in spin
-operators. To actually pin down the coefficient, we treat $\Ham_0 = U\sum_i n_{i\up}n_{i\dn}$ as
+operators. To actually pin down the coefficient, we treat $\Ham_U = U\sum_i n_{i\up}n_{i\dn}$ as
 the unperturbed Hamiltonian, with the singly- and doubly-occupied configurations of
 Section~\ref{sec:dimer} as its eigenstates, and the hopping $V =
 -t\sum_\sigma(\cre{0\sigma}\ann{1\sigma}+\mathrm{h.c.})$ as the perturbation. The parallel
@@ -406,8 +407,8 @@ bond treated in isolation this way.
 If instead we have more than one electron per site, as in multi-orbital atoms, we map onto
 higher-spin Heisenberg models instead: spin-$1$ for two electrons per site, spin-$\tfrac32$ for
 three, and so on. Additional weakly interacting orbitals can even flip the \emph{sign} of
-$J_{ij}$, giving us ferromagnetic rather than antiferromagnetic coupling, which is worth keeping
-in mind since real materials are not always antiferromagnets.
+$J_{ij}$, giving us ferromagnetic rather than antiferromagnetic coupling, which is why real
+materials are not always antiferromagnets.
 
 \begin{notebook}
 Section ``The strongly interacting limit of the Hubbard model.'' Compute $E_{\mathrm{FM}} -
@@ -467,7 +468,7 @@ self-consistent magnetization pattern.
 \paragraph{Anisotropic exchange.} Real materials often break the SU(2) spin-rotation symmetry of
 $\Ham_{\mathrm{Heis}}$ through spin--orbit coupling, adding bilinear-in-spin terms that are
 \emph{not} symmetric under a common rotation of all spins. There are three that come up often
-enough to be worth naming:
+enough to have their own names:
 \begin{itemize}[nosep]
   \item \textbf{Antisymmetric (Dzyaloshinskii--Moriya) exchange}, $\vb D_{ij}\cdot(\vb S_i\times
     \vb S_j)$, which shows up when mirror symmetry is broken and favors spins sitting at
@@ -481,9 +482,9 @@ enough to be worth naming:
     is exactly why this term is intrinsically frustrating and a key ingredient behind quantum
     spin liquid models.
 \end{itemize}
-None of these three terms are covered in the companion notebook. We flag them here as
-slides-only material that becomes relevant again in more advanced treatments of quantum
-magnetism.
+We will not compute with any of these three terms in this course, but they are what you reach for
+as soon as spin-orbit coupling is strong, and they are behind most of the exotic magnets and
+quantum spin liquid candidates studied today.
 
 \section{Charge density waves as a mean-field problem}
 The very same machinery applies to $\Ham_{\mathrm{CDW}}$ from Eq.~\eqref{eq:cdwmodel}: we
@@ -535,16 +536,16 @@ symmetry, in direct conflict with what the symmetry-broken mean-field solution t
 expect. The reason is structural, not a numerical accident: $\ket{\Psi_{\mathrm{singlet}}}$ is
 an entangled superposition, and it cannot be written as any single Slater determinant, no matter
 what choice of orbitals or spin quantization axis we try. Mean-field theory, built by
-construction out of product states (Section~\ref{sec:strongcoupling}), can simply never reach
+construction out of product states (Section~\ref{sec:variational}), can simply never reach
 it.
 
 \paragraph{Why this matters.} The Hubbard dimer is the smallest Hamiltonian you can write down
 that shows this failure mode, but the failure itself is completely generic: whenever the true
-many-body ground state is genuinely entangled and not adiabatically connected to a product
+many-body ground state is entangled and not adiabatically connected to a product
 state, mean-field theory gets the physics qualitatively wrong, the wrong symmetry, the wrong
 order, sometimes an entirely wrong phase. This is exactly the agenda for the rest of the course:
-\emph{exact diagonalization} (Sessions 2--3) solves small many-body Hamiltonians with no
-product-state restriction at all, and \emph{tensor network} methods (Sessions 4--5) let us
+\emph{exact diagonalization} (Sessions 2 and 3) solves small many-body Hamiltonians with no
+product-state restriction at all, and \emph{tensor network} methods (Sessions 4 and 5) let us
 recover the exact answer at system sizes where exact diagonalization is no longer feasible.
 
 \begin{table}[H]
@@ -558,7 +559,7 @@ Ansatz & product state (Slater det.) & unrestricted, full Hilbert space & bounde
 state (MPS) \\
 Cost vs.\ size $L$ & polynomial & exponential, $\sim 2^L$ & polynomial in $L$ and bond dimension \\
 Captures entanglement? & no & yes, exactly & yes, up to the bond dimension \\
-Typical reach & any $L$ & $L \lesssim 20$--$30$ & $L \sim 40$--$100+$ (1D) \\
+Typical reach & any $L$ & $L \lesssim 20$ spins, half that for spinful fermions & $L \sim 40$ to $100$ and more (1D) \\
 Fails when\ldots & ground state is not adiabatically connected to a product state (this session) &
 never, in principle (only limited by $L$) & entanglement exceeds what the bond dimension can
 store \\
@@ -573,7 +574,7 @@ mode.}
 Think of Table~\ref{tab:methodpreview} as a preview rather than a derivation: we will develop and
 use each of these methods on its own terms starting next session.
 
-\section*{Summary}
+\section*{Closing summary}
 \begin{itemize}[nosep]
   \item Second quantization lets us write single-particle and many-body ($\Order{4}$-fermion)
     Hamiltonians in one language; the interaction term is what drives all correlated physics.

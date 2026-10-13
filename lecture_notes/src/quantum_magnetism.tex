@@ -51,7 +51,7 @@ Ising variable. Minimizing the energy is trivial: we want $S_1^z$ and $S_2^z$ to
 there are exactly two ways to do that, $\ket{\up\dn}$ and $\ket{\dn\up}$. Both are legitimate ground
 states, both break time-reversal symmetry (flipping every spin sends one into the other), and each one
 individually has a finite, sharply defined local moment $\expval{S_i^z}=\pm\tfrac12$. This is a classical
-magnet in miniature: a genuinely symmetry-broken state with a finite magnetization at every site.
+magnet in miniature: a symmetry-broken state with a finite magnetization at every site.
 
 Now let us restore the full quantum mechanics of the spin operators and couple all three components,
 \begin{equation}
@@ -118,7 +118,7 @@ $E_+=\tfrac14 J$ for the symmetric combination, degenerate with $\ket{\up\up}$ a
 same energy $\tfrac{J}{4}$: together these three states form the \textbf{triplet}. Diagonalizing a
 $4\times4$ matrix by hand already reproduces the full singlet/triplet structure.
 
-There is a second, quicker way to get the same answer, and it is worth knowing because it generalizes.
+There is a second, quicker way to get the same answer, and we will use it again because it generalizes.
 Define the total spin $\vb S_{\mathrm{tot}} = \vb S_1+\vb S_2$, so that
 $\vb S_{\mathrm{tot}}^2 = \vb S_1^2+\vb S_2^2+2\,\vb S_1\cdot\vb S_2$, and hence
 \begin{equation}
@@ -177,7 +177,7 @@ ring of $L$ sites is exactly a one-dimensional particle-in-a-box problem: its le
   \Delta(L) \;\sim\; \frac{\pi v_s}{L},
   \label{eq:gapscaling}
 \end{equation}
-with $v_s$ the velocity of the low-energy excitations, i.e.\ a genuine $1/L$ power law rather than a
+with $v_s$ the velocity of the low-energy excitations, i.e.\ a $1/L$ power law rather than a
 finite gap. (Numerically, the finite-size data is well fit by $\Delta(L)\approx\pi^2J/(2L)$; pinning down
 $v_s$ this precisely is a job for the exact Bethe-ansatz solution, not for mean-field theory, which gets
 the qualitative power law right but not the precise coefficient.) Keep this ``particle in a box'' picture
@@ -232,8 +232,8 @@ the ground state actually get from one description to the other as we sweep $J_{
   \label{fig:neel-pair}
 \end{figure}
 
-The finite-size spectrum answers this beautifully. At small $J_{xy}$, the two classical N\'eel states are
-not exactly degenerate on a finite chain (only a genuinely infinite chain can spontaneously break a
+The finite-size spectrum answers this directly. At small $J_{xy}$, the two classical N\'eel states are
+not exactly degenerate on a finite chain (only an infinite chain can spontaneously break a
 symmetry), but they sit extremely close together, split by a tiny amount that we can literally watch on
 the screen: this is the finite-size ghost of the classical double degeneracy. As we increase $J_{xy}$
 toward $1$, this splitting grows continuously, and for any finite $L$ that growth eventually turns into a
@@ -243,7 +243,7 @@ low-lying states stay nearly degenerate over a longer and longer stretch of $J_{
 sharpens toward the exact, thermodynamic-limit transition of the XXZ chain, which the Bethe-ansatz
 solution places precisely at the isotropic, SU(2)-symmetric point $J_{xy}=J_z$. In other words: just by
 watching how two eigenvalues in a finite-size spectrum move and split as we tune a coupling constant, we
-can already diagnose a genuine quantum phase transition, well before we ever reach the thermodynamic
+can already diagnose a quantum phase transition, well before we ever reach the thermodynamic
 limit itself. This is a technique we will lean on again and again in the rest of the course.
 
 \begin{notebook}
@@ -307,14 +307,13 @@ of dimension
 \end{equation}
 The largest block sits at $m=0$ (for even $L$), with $\dim(0)=\binom{L}{L/2}\sim 2^L/\sqrt{\pi L/2}$ by
 Stirling's approximation: still exponential in $L$, but a factor $\sim\sqrt L$ smaller than the full
-Hilbert space, and, crucially, diagonalizable completely independently of every other block. If the
+Hilbert space, and, what matters most, it can be diagonalized independently of every other block. If the
 chain is also periodic, translational invariance gives us a second conserved quantity, the total
-momentum $k$, and combining Sz-sectors with momentum sectors shrinks the largest block by roughly
-another factor of $L$. This combination, exploiting every available conserved quantity together with the
-sparse-matrix Lanczos techniques of Section~\ref{sec:ed}, is exactly how a code like \texttt{dmrgpy}
-manages to push exact diagonalization out to the $L\lesssim20$ spins we will be working with all
-session; without it, $2^{20}\approx10^6$ would already be a serious dense-matrix computation, and $L=30$
-would simply be out of reach.
+momentum $k$, and combining $S_{\mathrm{tot}}^z$ sectors with momentum sectors shrinks the largest block by roughly
+another factor of $L$. Exploiting every available conserved quantity together with the sparse-matrix
+Lanczos techniques of Section~\ref{sec:ed} is how exact-diagonalization codes reach the $L\sim20$ spins
+that mark the limit of this session; without it, $2^{20}\approx10^6$ would already be a serious
+dense-matrix computation, and $L=30$ would simply be out of reach.
 
 \begin{figure}[H]
   \centering
@@ -340,7 +339,7 @@ Then think about what field-dependent term would bend the lines instead of keepi
 \section{Level crossings and magnetization curves}
 \label{sec:levelcrossings}
 Equation~\eqref{eq:zeeman} does more than split levels: because different $m$-sectors disperse with
-different slopes, they can cross, and a crossing at the very bottom of the spectrum is a genuine
+different slopes, they can cross, and a crossing at the very bottom of the spectrum is a
 \textbf{level crossing of the ground state}. For the dimer this is easy to pin down exactly: the
 ground state is the singlet, at $-\tfrac34J$, until the $m=+1$ triplet branch $E=\tfrac14J-B$ drops below
 it, which happens once
@@ -368,11 +367,11 @@ for the exchange term to do once every spin is already maximally aligned. Sweepi
 the identical staircase with the opposite sign of magnetization, exactly the time-reversal partner of the
 $B>0$ curve.
 
-It is also worth looking directly at the excited states in a small field, before any level crossing has
+Let us also look directly at the excited states in a small field, before any level crossing has
 happened. The ground state stays a total-$S=0$ singlet with zero magnetization on every site. The first
 excited states, the $S=1$ triplet members, do carry a finite total magnetization, but that magnetization
 is not localized anywhere: it is smeared out over the whole chain, one more signature that these are
-genuinely delocalized many-body excitations rather than a single flipped spin sitting at one site.
+delocalized many-body excitations rather than a single flipped spin sitting at one site.
 Higher excited states repeat this pattern with different sign structures, several of them related to
 each other by time reversal, and this whole family of spread-out, roughly particle-in-a-box-like
 excitations is exactly what the dynamical correlator of Section~\ref{sec:dynamical} will let us resolve
@@ -412,7 +411,7 @@ Eq.~\eqref{eq:gapscaling}: even $L\sim20$ is not enough to convince yourself the
 zero. For the dimerized chain, a finite gap sets its own length scale, the correlation length
 $\xi\sim v_s/\Delta_\infty$, and finite-size corrections to the gap are suppressed exponentially,
 $\Delta(L)-\Delta_\infty \sim e^{-L/\xi}$, rather than as a power law. That is why, numerically, a
-dimerized chain's gap already looks converged by $L\sim12$--$14$, while the uniform chain's gap is still
+dimerized chain's gap already looks converged by $L\sim12$ to $14$, while the uniform chain's gap is still
 visibly drifting at the same size: the presence or absence of a length scale $\xi$ is precisely what
 separates fast, exponential finite-size convergence from slow, power-law convergence.
 
@@ -492,7 +491,7 @@ denser.
 
 \paragraph{A first look at spin-1.} If we redo this same calculation for a spin-$1$ Heisenberg chain
 instead of spin-$\tfrac12$, the profile of $S(i,\omega)$ looks qualitatively different. This is because
-the two cases sit in genuinely different phases: the spin-$\tfrac12$ chain is gapless in the
+the two cases sit in different phases: the spin-$\tfrac12$ chain is gapless in the
 thermodynamic limit, as we have seen throughout this session, while the spin-$1$ chain is what is called
 a \textbf{topological quantum magnet}, with a full gap in the bulk but gapless, fractionalized
 spin-$\tfrac12$ excitations pinned to the two ends of an open chain. The underlying reason half-integer
@@ -569,11 +568,10 @@ spinons, whose spectrum opens a gap set by the difference between the strong- an
 amplitudes, mirroring the many-body gap of Section~\ref{sec:dimerization}. The same construction
 generalizes to two dimensions, where an analogous mean-field ansatz on, say, the honeycomb lattice
 produces gapless \textbf{Dirac spinons}, the auxiliary-fermion language behind many candidate quantum
-spin liquids. None of this spinon construction is covered in the companion notebook; we flag it here as
-slides-and-lecture-only material, in the same spirit as the anisotropic exchange terms we flagged at the
-end of Session 1.
+spin liquids. We will not compute spinon bands in the notebook, but the picture is worth keeping,
+since it is the language in which most proposals for quantum spin liquids are written.
 
-\section*{Summary}
+\section*{Closing summary}
 \begin{itemize}[nosep]
   \item Exact diagonalization means writing the Heisenberg Hamiltonian as a matrix on the full $2^L$
     product-state basis and diagonalizing it directly, with no product-state restriction anywhere; the
@@ -596,14 +594,14 @@ end of Session 1.
     the same physics as the gap scaling.
   \item Dynamical correlators resolve excitations in both space and energy via the Lehmann
     representation; comparing spin-$\tfrac12$ and spin-$1$ chains gives our first hint of the
-    fractionalized, topological physics of the Haldane phase, developed properly with tensor networks in
+    fractionalized, topological physics of the spin-$1$ chain, developed properly with tensor networks in
     Session 4.
   \item Representing spins as constrained Abrikosov fermions and mean-field decoupling the exchange term
     gives an effective free-fermion, spinon, description of the excitations: gapless spinons for the
     uniform chain, gapped spinons for the dimerized chain, using exactly the same self-consistency
     machinery as Session 1's Hubbard mean-field theory.
   \item All of this is numerically exact, but the underlying cost is still exponential in $L$: even with
-    every symmetry we can exploit, exact diagonalization caps out around a few tens of spins, which is
+    every symmetry we can exploit, exact diagonalization caps out around $L\sim20$ spins, which is
     precisely the wall that motivates the matrix-product-state methods of Session 4.
 \end{itemize}
 

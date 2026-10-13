@@ -17,11 +17,11 @@
 
   % ---- site tensors, one row index up and one column index down
   \foreach \i/\x/\up/\dn in {%
-      1/0/{\sigma_1}/{\sigma_1'},
-      2/2.4/{\sigma_2}/{\sigma_2'},
-      3/4.8/{\sigma_3}/{\sigma_3'},
-      4/9.6/{\sigma_{L-1}}/{\sigma_{L-1}'},
-      5/12.0/{\sigma_L}/{\sigma_L'}} {
+      1/0/{s_1}/{s_1'},
+      2/2.4/{s_2}/{s_2'},
+      3/4.8/{s_3}/{s_3'},
+      4/9.6/{s_{L-1}}/{s_{L-1}'},
+      5/12.0/{s_L}/{s_L'}} {
     \node[optensor] (w\i) at (\x,0) {};
     \draw[wire] (\x,0.375) -- (\x,\leg);
     \draw[wire] (\x,-0.375) -- (\x,-\leg);
@@ -30,9 +30,9 @@
   }
 
   % ---- internal bond legs
-  \draw[wire] (w1) -- (w2) node[lbl, midway, above=1pt] {$D_W$};
-  \draw[wire] (w2) -- (w3) node[lbl, midway, above=1pt] {$D_W$};
-  \draw[wire] (w4) -- (w5) node[lbl, midway, above=1pt] {$D_W$};
+  \draw[wire] (w1) -- (w2) node[lbl, midway, above=1pt] {$\chi_W$};
+  \draw[wire] (w2) -- (w3) node[lbl, midway, above=1pt] {$\chi_W$};
+  \draw[wire] (w4) -- (w5) node[lbl, midway, above=1pt] {$\chi_W$};
 
   % ---- the part of the chain we are not drawing
   \draw[wire] (w3) -- (6.6,0);
@@ -40,7 +40,7 @@
   \draw[wire] (7.8,0) -- (w4);
 
   % ---- what a bulk tensor is
-  \node[lbl, anchor=west, text=courseaccent] at (5.75,-1.15) {$W^{\sigma_3\sigma_3'}$};
+  \node[lbl, anchor=west, text=courseaccent] at (5.75,-1.15) {$W_3^{s_3s_3'}$};
   \draw[courseaccent, line width=0.6pt] (5.7,-1.1) -- (5.2,-0.42);
 
 \end{tikzpicture}

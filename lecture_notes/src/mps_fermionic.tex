@@ -3,22 +3,23 @@
 \begin{document}
 
 \notestitle{Session 5}{Matrix Product States for Fermionic Models}%
-  {mps\_many\_body\_fermionic.ipynb}{Sessions 3--4 (exact diagonalization directly in the fermionic
+  {mps\_many\_body\_fermionic.ipynb}{Sessions 3 and 4 (exact diagonalization directly in the fermionic
   basis; matrix product states for spin chains)}
 
 \section*{Contents and goals}
 Let us recall where we left things. In Session 3 we redid our many-body program directly in the
-fermionic basis, with no product-state restriction at all, and it worked beautifully: we recovered
-the exact spinless charge-density-wave transition and genuine spin-charge separation in the Hubbard
-model. But we hit exactly the same wall we always hit with exact diagonalization, the Hilbert space
-grows as $4^L$, and we were stuck around $L\sim 12$--$16$ sites. In Session 4 we built the fix,
+fermionic basis, with no product-state restriction at all, and it worked: we recovered the exact
+spinless charge-density-wave transition and spin-charge separation in the Hubbard model. But we hit
+exactly the same wall we always hit with exact diagonalization: the Hilbert space grows as $2^L$ for
+spinless fermions and $4^L$ for the Hubbard chain, which kept the Hubbard chain to about half the
+length we could reach for spins. In Session 4 we built the fix,
 matrix product states, but we only ever applied it to \emph{spin} Hamiltonians. Today we close the
 loop: we are going to solve interacting \emph{fermionic} Hamiltonians with tensor networks, at
 system sizes of a hundred sites or more, by first mapping them onto spin Hamiltonians through the
 Jordan-Wigner transformation and then reusing every piece of MPS machinery we already built. Along
 the way we will redo the Session 3 spinless and Hubbard results at a scale where the physics is
-unambiguous, meet two genuinely new diagnostics, pairing correlators and the correlation entropy,
-and finish, since this is the last session of the course, with the general tensor-network algorithm
+unambiguous, meet two new diagnostics, pairing correlators and the correlation entropy, and finish
+with the general tensor-network algorithm
 that has been quietly running underneath everything since Session 4.
 
 \section*{Learning outcomes}
@@ -26,7 +27,7 @@ By the end of this session, you should be able to:
 \begin{itemize}[nosep]
   \item Map a fermionic Hamiltonian onto an equivalent spin Hamiltonian via the Jordan-Wigner
     transformation, and explain why nearest-neighbor hopping needs no explicit string.
-  \item Use MPS at system sizes of $\sim100$ sites to locate a genuine quantum phase transition
+  \item Use MPS at system sizes of $\sim100$ sites to locate a quantum phase transition
     that exact diagonalization could not resolve sharply.
   \item Compute pairing correlators, including their enhancement toward Cooper-pair-like behavior
     under attractive interactions, and use the correlation entropy to judge how far a ground state
@@ -88,7 +89,7 @@ guess $\widetilde S_i^+ \equiv \cre{i}$, $\widetilde S_j^- \equiv \ann{j}$ for $
 \end{equation}
 where the last step is just the fermionic anticommutation relation for $i\ne j$. So the naive guess
 gives us two operators that \emph{anticommute}, $\widetilde S_i^+\widetilde S_j^- =
--\widetilde S_j^-\widetilde S_i^+$, whereas genuine spin operators on different sites, being
+-\widetilde S_j^-\widetilde S_i^+$, whereas actual spin operators on different sites, being
 independent two-level systems glued together with an ordinary tensor product, absolutely must
 \emph{commute}, $S_i^+S_j^- = S_j^-S_i^+$. This is precisely the anticommutation-versus-commutation
 mismatch we flagged above, and it means we need to dress the naive guess with something that fixes
@@ -118,11 +119,11 @@ a spin Hilbert space, which are literally the same vector space, carry consisten
 \subsection{Why nearest-neighbor hopping barely notices the string}
 \label{sec:nnhop}
 The reason this mapping is actually useful in practice, rather than just a mathematical curiosity,
-is a small miracle that happens for nearest-neighbor terms. Take $i<j$ and work out the general
+is what happens for nearest-neighbor terms. Take $i<j$ and work out the general
 spin bilinear $S_i^+S_j^-$ in terms of fermions. Writing $K_j = K_i(1-2n_i)\prod_{i<k<j}(1-2n_k)$
-and using $K_i^2=1$ together with the operator identity $\cre{i}(1-2n_i)=\cre{i}$ (creating a
-particle on an already-doubly-forbidden site trivially just annihilates the extra term, since
-$\cre{i}n_i=0$), a short calculation gives
+and using $K_i^2=1$ together with the operator identity $\cre{i}(1-2n_i)=\cre{i}$ (which holds because
+$\cre{i}n_i=0$: we cannot create a particle on a site that is already occupied), a short
+calculation gives
 \begin{equation}
   S_i^+S_j^- = \cre{i}\ann{j}\prod_{i<k<j}\left(1-2n_k\right), \qquad i<j.
   \label{eq:jwstring}
@@ -134,7 +135,7 @@ $j=i+1$: the product in Eq.~\eqref{eq:jwstring} runs over an empty range and is 
   S_i^+S_{i+1}^- = \cre{i}\ann{i+1}.
 \end{equation}
 The string cancels completely. One can verify directly, using the same identities, that
-$S_{i+1}^-S_i^+$ gives the very same operator, confirming that these two spin operators genuinely
+$S_{i+1}^-S_i^+$ gives the very same operator, confirming that these two spin operators
 commute as they must. So \emph{nearest-neighbor} hopping maps onto a completely local, string-free
 spin term, while longer-range hopping does not. This is exactly why the Jordan-Wigner trick is such
 a good match for one-dimensional, nearest-neighbor tensor-network methods: the models we actually
@@ -163,7 +164,7 @@ machinery from Session 4; (4) map expectation values back to the fermionic langu
 dictionary in reverse. From a practical standpoint, once this is set up, we can simply think of it
 as a many-body solver for interacting fermions, and never worry about the string again, exactly the
 way \texttt{dmrgpy}'s \texttt{fermionchain} class handles it internally for every calculation in
-this notebook, which uses open boundary conditions throughout (Section~\ref{sec:jw}'s string
+the companion notebook, which uses open boundary conditions throughout (Section~\ref{sec:jw}'s string
 cancellation for nearest-neighbor hopping relies on a fixed left-to-right site ordering; on a
 periodic chain the bond that closes the ring is not nearest-neighbor in that ordering and does pick
 up an explicit, filling-dependent string, which is one more reason to stick to open chains).
@@ -174,8 +175,8 @@ along a single one-dimensional string before Eq.~\eqref{eq:jw} can be applied. T
 to interleave them site by site, $\up_1,\dn_1,\up_2,\dn_2,\ldots$, so that same-site operators stay
 adjacent; the alternative is to order all up-spins first and all down-spins after,
 $\up_1,\ldots,\up_L,\dn_1,\ldots,\dn_L$, which keeps each spin sector's own hopping local but pushes
-the on-site $U$ term into a long string. Either ordering is exact, and \texttt{dmrgpy} picks one for
-us internally, but it is worth knowing this choice exists the next time you see a spinful
+the onsite $U$ term into a long string. Either ordering is exact, and \texttt{dmrgpy} picks one for
+us internally, so keep in mind that this choice exists the next time you see a spinful
 Jordan-Wigner string written down elsewhere.
 
 \section{Large-scale replay: the spinless interacting chain}
@@ -193,7 +194,7 @@ sharp thermodynamic phase transition, is exactly where between these two limits 
 happens, and MPS is going to answer that question for us.
 
 \subsection{A pleasant surprise: this is the XXZ chain}
-Before diving into the numerics it is worth pausing on the Jordan-Wigner image of
+Before the numerics, let us look at the Jordan-Wigner image of
 Eq.~\eqref{eq:cdw}, because it reconnects us to a model from Session 2. Using
 Eq.~\eqref{eq:jw} and \eqref{eq:jwstring} for adjacent sites, the hopping term becomes
 $-t(S_i^+S_{i+1}^-+\mathrm{h.c.}) = -2t(S_i^xS_{i+1}^x+S_i^yS_{i+1}^y)$, while the density term is
@@ -236,7 +237,7 @@ the $L=100$ chain for $V=40t$ and $V=t$ and confirm the two behaviors described 
 order versus a decaying edge oscillation. Section ``Charge density in the presence of an impurity''
 lets you repeat essentially the same diagnostic with the perturbation placed inside the chain
 instead of at the edge, and moving it to the middle is a good way to convince yourself the effect is
-a genuine bulk property and not an artifact of the boundary.
+a bulk property and not an artifact of the boundary.
 \end{notebook}
 
 \subsection{The phase transition at $V_c$}
@@ -245,10 +246,10 @@ tracking the bulk charge imbalance (or, equivalently, the site density deep in t
 the pinning) as a function of $V$. Below a critical value the bulk density stays flat at
 $\expval{n}=\tfrac12$ no matter how hard we pin the edges; above it, the bulk itself develops a
 finite charge imbalance, and the pinning field is only needed to select which of the two equivalent
-sublattices orders. Numerically this happens at $V_c\approx 2t$, in beautiful agreement with the
-exact XXZ result we derived in Eq.~\eqref{eq:xxzferm}. This is a genuine, thermodynamic-limit quantum
+sublattices orders. Numerically this happens at $V_c\approx 2t$, in agreement with the
+exact XXZ result we derived in Eq.~\eqref{eq:xxzferm}. This is a thermodynamic-limit quantum
 phase transition, a nonanalyticity in the ground state as a function of $V$ at zero temperature, and
-it is one that a $L\sim 12$ exact-diagonalization calculation from Session 3 simply could not resolve
+it is one that exact diagonalization at the $L\sim12$ to $14$ of Session 3 simply could not resolve
 sharply: only at the $L\sim100$ scale that MPS gives us for free does the transition become crisp.
 
 \begin{notebook}
@@ -297,14 +298,14 @@ whose slope is $-1/\xi$).
 \end{notebook}
 
 \subsection{Pairing correlators and the Cooper-pair susceptibility}
-Everything so far involved moving a single electron. Let us now ask a genuinely different question:
+Everything so far involved moving a single electron. Let us now ask a different question:
 how much does the ground state want to create or destroy a \emph{pair} of electrons at once? Define
 the local bond-pair annihilation operator $\Delta_i \equiv \ann{i}\ann{i+1}$ and its correlator,
 \begin{equation}
   P(i,j) \equiv \expval{\Delta_j^{\dagger}\Delta_i}
     = \expval{\cre{j+1}\cre{j}\,\ann{i+1}\ann{i}}.
 \end{equation}
-This is a genuinely new object, it has no analogue in Session 3, where we never asked two-particle
+This is a new object, with no analogue in Session 3, where we never asked two-particle
 questions like this one. It is a four-point (two-particle) correlator: it measures how correlated
 the fluctuation ``destroy a pair near $i$'' is with the fluctuation ``create a pair near $j$,'' and
 by the same Kubo-formula logic as before, it is exactly what governs the linear response of the
@@ -320,8 +321,8 @@ Session 1: repulsive interactions suppress pair correlations, attractive interac
 
 \begin{notebook}
 Section ``Non-local pairing fluctuations of an attractive fermionic model.'' Compare $P(i,j)$ for
-$V=0$, a repulsive $V>0$, and an attractive $V<0$, and confirm that repulsion suppresses the decay
-rate of the pairing correlator relative to the free case while attraction enhances it.
+$V=0$, a repulsive $V>0$, and an attractive $V<0$, and confirm that repulsion makes the pairing
+correlator decay faster than in the free case while attraction makes it decay slower.
 \end{notebook}
 
 \section{The Hubbard model at scale: spin-charge separation revisited}
@@ -375,10 +376,10 @@ the roles of the spin and charge sectors should swap in that case.
 \end{notebook}
 
 \subsection{Pairing correlators in the Hubbard model}
-Finally, define the on-site singlet pair operator $\Delta_i^{\mathrm{on-site}} \equiv
+Finally, define the onsite singlet pair operator $\Delta_i^{\mathrm{onsite}} \equiv
 \ann{i\dn}\ann{i\up}$ (a different pairing channel than Section~\ref{sec:correlators}'s
 nearest-neighbor bond operator $\Delta_i$) and its correlator
-$\expval{(\Delta_j^{\mathrm{on-site}})^{\dagger}\Delta_i^{\mathrm{on-site}}}$, the direct
+$\expval{(\Delta_j^{\mathrm{onsite}})^{\dagger}\Delta_i^{\mathrm{onsite}}}$, the direct
 Hubbard-model analogue of the pairing
 susceptibility we built in Section~\ref{sec:correlators}. The qualitative conclusion carries over
 unchanged: repulsive $U$ suppresses the pairing correlator relative to the noninteracting baseline,
@@ -389,7 +390,7 @@ interaction would do.
 
 \begin{notebook}
 Section ``Pairing correlators in the Hubbard model.'' Repeat the repulsive-versus-attractive
-comparison from the spinless case, now for the on-site singlet pairing correlator, and check that
+comparison from the spinless case, now for the onsite singlet pairing correlator, and check that
 the same qualitative story holds.
 \end{notebook}
 
@@ -401,21 +402,21 @@ tool that lets us answer this question directly from the exact ground state, wit
 run a separate mean-field calculation and compare energies by hand.
 
 \subsection{Definition via the correlation matrix}
-Take the same nonlocal correlator we have been using all session, $\chi_{ij} \equiv
+Take the same nonlocal correlator we have been using all session, $C_{ij} \equiv
 \expval{\cre{i}\ann{j}}$, but now think of it not as a single number for fixed $i=1$, but as an
 $L\times L$ Hermitian matrix, the \textbf{correlation matrix}. Diagonalize it,
-$\chi = \sum_k \nu_k \ket{k}\bra{k}$, with real eigenvalues $\nu_k$.
+$C = \sum_k \nu_k \ket{k}\bra{k}$, with real eigenvalues $\nu_k$.
 
 Suppose first that the ground state is a Slater determinant, $\ket{\Psi} = \prod_{n\in\mathrm{occ}}
 \cre{a_n}\vac$, exactly the kind of state mean-field theory builds. In the single-particle basis
-that diagonalizes the mean-field orbitals, $\chi_{ij}$ is manifestly diagonal, with a $1$ for every
-occupied orbital and a $0$ for every empty one, so $\chi^2=\chi$: the correlation matrix of a Slater
+that diagonalizes the mean-field orbitals, $C_{ij}$ is manifestly diagonal, with a $1$ for every
+occupied orbital and a $0$ for every empty one, so $C^2=C$: the correlation matrix of a Slater
 determinant is a \emph{projector}, and a projector has eigenvalues that are exactly $0$ or $1$ (since
 $\nu_k^2=\nu_k$ forces $\nu_k\in\{0,1\}$). This gives us a clean litmus test: if every eigenvalue of
-$\chi$ is exactly $0$ or $1$, the state in front of us is, or is equivalent to, a single Slater
+$C$ is exactly $0$ or $1$, the state in front of us is, or is equivalent to, a single Slater
 determinant, and mean-field theory can reach it exactly.
 
-For a genuinely correlated ground state, $\chi^2\ne\chi$ in general, and the eigenvalues $\nu_k$
+For a correlated ground state, $C^2\ne C$ in general, and the eigenvalues $\nu_k$
 spread out continuously over $[0,1]$ instead of collapsing onto the two endpoints. We can quantify
 how far we are from the product-state limit with an entropy built exactly the way we would build a
 binary Shannon entropy for each ``occupation probability'' $\nu_k$,
@@ -437,8 +438,8 @@ single Slater determinant (just in real space instead of momentum space). So $S_
 \to 0$ at both ends. In between, and in particular right around the critical point $V\approx 2t$ we
 found in Section~\ref{sec:spinless}, the correlation entropy rises to a clear peak: this is exactly
 the regime where the ground state is most entangled, most resistant to any single-Slater-determinant
-description, and it is no accident that this coincides with the quantum phase transition itself,
-critical points are generically where correlations, and hence entanglement, are strongest.
+description, and it coincides with the quantum phase transition itself, since critical points are
+generically where correlations, and hence entanglement, are strongest.
 
 \begin{notebook}
 Section ``The correlation entropy of an interacting fermionic model.'' Plot $S_{\mathrm{corr}}$
@@ -451,7 +452,7 @@ the finite-size sensitivity we already saw for the phase transition itself.
 We can make this diagnostic even more concrete by engineering a controlled crossover between a
 strongly correlated state and a mean-field one, in a single Hamiltonian. Take the Hubbard model and
 add exactly the staggered mean-field magnetic term that Session 1's self-consistency loop would have
-generated on its own,
+generated on its own, the same staggered field we switched on in Session 3,
 \begin{equation}
   \Ham = \Ham_{\mathrm{Hub}} + J_z\sum_i (-1)^i S_i^z.
 \end{equation}
@@ -462,10 +463,10 @@ $J_z$, we are explicitly biasing the ground state toward the broken-symmetry, st
 state that mean-field theory would give us directly. And indeed, as $J_z$ grows, the correlation
 entropy of Eq.~\eqref{eq:corrent} systematically drops: the ground state is being pushed, by hand,
 toward exactly the kind of product-like, symmetry-broken state that a self-consistent mean-field
-calculation would converge to on its own. This is a satisfying full circle back to Session 1: we can
-now watch, quantitatively, the same product-state simplification that mean-field theory always
-assumes, only here we see exactly how much entanglement gets thrown away in making that assumption,
-and exactly when it is or is not a good approximation.
+calculation would converge to on its own. This closes the circle back to Session 1: in Session 3
+we watched the magnetization grow under this same field, and now we can also see, quantitatively,
+how much entanglement is thrown away in the product-state simplification that mean-field theory
+always assumes, and so when it is or is not a good approximation.
 
 \begin{notebook}
 Section ``From a quantum magnet to a symmetry broken mean field magnet.'' Sweep the staggered field
@@ -475,25 +476,24 @@ stronger $U$ should push the system further from (or closer to) a mean-field des
 \end{notebook}
 
 \begin{notebook}
-Beyond what was covered in the recording, the notebook also contains three self-study sections
-that develop these same tools further: ``Energy of interacting spinless fermions as a function of
+The notebook also contains three sections that go beyond these notes and develop the same tools
+further: ``Energy of interacting spinless fermions as a function of
 the system size'' revisits how finite-size scaling of the ground-state energy lets you extrapolate
 to the thermodynamic limit; ``Magnetic correlations in a dimerized Hubbard model'' asks how
 alternating strong/weak bonds reshape the spin correlator we built in
 Section~\ref{sec:hubbard}; and ``Correlation entropy of the Anderson model'' applies the correlation
 entropy of Section~\ref{sec:corrent} to a single correlated impurity coupled to a metallic host,
-tracking how the entropy is distributed in space around the impurity. None of these were part of the
-lecture itself, but they are natural extensions worth exploring with the tools you now have.
+tracking how the entropy is distributed in space around the impurity. They are natural extensions
+to try once you have worked through the sections above.
 \end{notebook}
 
 \section{The general tensor-network algorithm}
 \label{sec:algorithm}
-We have now used matrix product states extensively, across two full sessions, without ever really
-opening the hood on how the ground-state search is actually carried out. Let us close the course by
-doing exactly that.
+We have now used matrix product states extensively, across two full sessions, without ever looking
+at how the ground-state search is actually carried out. Let us close by doing exactly that.
 
 \subsection{Diagrammatic notation}
-It helps enormously to draw tensors rather than write out their indices. A scalar is a dot with no
+It helps a lot to draw tensors rather than write out their indices. A scalar is a dot with no
 legs, a vector is a dot with one leg, a matrix is a dot with two legs, and a general rank-three
 tensor is a dot with three legs, one leg per index. Contracting an index between two tensors, i.e.\
 summing over it, is drawn by joining the corresponding legs into a single line; matrix-vector
@@ -501,15 +501,15 @@ multiplication, for instance, is just a two-legged dot joined to a one-legged do
 leg, leaving one free leg, exactly a vector again, as it should be. An MPS is then nothing more than
 a one-dimensional chain of such dots: each site carries one \emph{physical} leg, of dimension $2$ for
 a spin-$\tfrac12$ (or, after Jordan-Wigner, for a spinless-fermion site), and two \emph{bond} legs of
-dimension $D$ connecting it to its left and right neighbors,
+dimension $\chi$ connecting it to its left and right neighbors,
 \begin{equation}
-  \ket{\Psi} = \sum_{\{\sigma_i\}} A^{\sigma_1}A^{\sigma_2}\cdots A^{\sigma_L}\,
-    \ket{\sigma_1\sigma_2\cdots\sigma_L},
+  \ket{\Psi} = \sum_{\{s_i\}} M_1^{s_1}M_2^{s_2}\cdots M_L^{s_L}\,
+    \ket{s_1s_2\cdots s_L},
 \end{equation}
-where each $A^{\sigma_i}$ is a $D\times D$ matrix and the matrix product running along the chain is
+where each $M_i^{s_i}$ is a $\chi\times\chi$ matrix (a row and a column vector at the two ends) and the matrix product running along the chain is
 exactly the string of joined bond legs in the diagram. The bond legs carry no physical meaning of
 their own, they are simply the bookkeeping device that lets a single tensor encode entanglement
-between the two halves of the chain it separates, capped at $\log_2 D$ bits, exactly the
+between the two halves of the chain it separates, capped at $S_A\le\ln\chi$, exactly the
 entanglement-entropy bound we derived in Session 4.
 
 \begin{figure}[H]
@@ -528,11 +528,11 @@ Hamiltonians need the same treatment. A \textbf{matrix product operator (MPO)} i
 version of an MPS: instead of one physical leg per site we now have two, one for the row index and
 one for the column index of the local operator, plus the same two internal bond legs as before,
 \begin{equation}
-  \Ham = \sum_{\{\sigma_i,\sigma_i'\}} W^{\sigma_1\sigma_1'}W^{\sigma_2\sigma_2'}\cdots
-    W^{\sigma_L\sigma_L'}\,\ket{\sigma_1\cdots\sigma_L}\bra{\sigma_1'\cdots\sigma_L'}.
+  \Ham = \sum_{\{s_i,s_i'\}} W_1^{s_1s_1'}W_2^{s_2s_2'}\cdots
+    W_L^{s_Ls_L'}\,\ket{s_1\cdots s_L}\bra{s_1'\cdots s_L'}.
 \end{equation}
 For a nearest-neighbor Hamiltonian like $\Ham_{\mathrm{Heis}} = J\sum_i \vb S_i\cdot\vb S_{i+1}$,
-this internal bond dimension can be made very small, just large enough to carry ``nothing has
+this internal bond dimension, which we call $\chi_W$, can be made very small, just large enough to carry ``nothing has
 happened yet,'' ``an $S^x$, $S^y$, or $S^z$ was just placed and is waiting for its partner on the
 next site,'' and ``the interaction has already been closed,'' so a handful of internal states per
 bond is enough to represent the exact Hamiltonian, not an approximation to it.
@@ -541,9 +541,9 @@ bond is enough to represent the exact Hamiltonian, not an approximation to it.
   \centering
   \includegraphics[width=0.85\textwidth]{figures/mpo_chain.pdf}
   \caption{A matrix product operator, the operator counterpart of the matrix product state we
-    used throughout Session 4. Each site tensor $W^{\sigma_i\sigma_i'}$ carries \emph{two}
-    physical legs, one for the row index $\sigma_i$ and one for the column index $\sigma_i'$, on
-    top of the same two internal bond legs as before, here of dimension $D_W$. For a
+    used throughout Session 4. Each site tensor $W_i^{s_is_i'}$ carries \emph{two}
+    physical legs, one for the row index $s_i$ and one for the column index $s_i'$, on
+    top of the same two internal bond legs as before, here of dimension $\chi_W$. For a
     nearest-neighbor Hamiltonian those internal bonds only need to carry a handful of states,
     which is enough to encode $\Ham$ exactly rather than approximately.}
   \label{fig:mpo-chain}
@@ -553,13 +553,13 @@ bond is enough to represent the exact Hamiltonian, not an approximation to it.
 The operation we need over and over is $\Ham\ket{\Psi}$. Diagrammatically this is simply joining the
 physical legs of the MPO to the physical legs of the MPS, one site at a time, and merging the two
 bond legs (one from the MPS, one from the MPO) that now run in parallel between neighboring sites
-into a single, wider bond. The result is again an MPS, but with bond dimension $D\cdot D_W$, the
+into a single, wider bond. The result is again an MPS, but with bond dimension $\chi\chi_W$, the
 product of the two bond dimensions we started with. This is the practical cost of contraction: every
 time we act with $\Ham$, the bond dimension grows, and if we did this repeatedly without
 intervention, it would grow exponentially and defeat the whole purpose of using an MPS in the first
 place. The fix is exactly the tool we already used for state compression in Session 4: a singular
-value decomposition on every bond, keeping only the largest $D$ singular values (equivalently, the
-$D$ largest eigenvalues of the reduced density matrix across that bond) and discarding the rest.
+value decomposition on every bond, keeping only the largest $\chi$ singular values (equivalently, the
+$\chi$ largest eigenvalues of the reduced density matrix across that bond) and discarding the rest.
 Because entanglement in a gapped one-dimensional system saturates at a finite value, this truncation
 introduces only a small, controllable error, and is the single most important practical operation
 underlying every tensor-network calculation we have run this session.
@@ -569,24 +569,24 @@ Finally, how do we actually find the ground state, rather than just apply $\Ham$
 MPS as a variational ansatz and minimize the energy functional directly. Introducing a Lagrange
 multiplier $\lambda$ to enforce normalization, we want a stationary point of
 \begin{equation}
-  f[\{A\}] = \bra{\Psi[\{A\}]}\Ham\ket{\Psi[\{A\}]} - \lambda\left(\braket{\Psi[\{A\}]}-1\right).
+  f[\{M\}] = \bra{\Psi[\{M\}]}\Ham\ket{\Psi[\{M\}]} - \lambda\left(\braket{\Psi[\{M\}]}-1\right).
 \end{equation}
 The key simplification, and the reason this is tractable at all, is that $\ket{\Psi}$ is
-\emph{linear} in any single one of its tensors $A^{\sigma_i}$ once all the others are held fixed.
-Setting $\partial f/\partial A^{\sigma_i} = 0$ at fixed neighbors, contracting away every tensor we
+\emph{linear} in any single one of its tensors $M_i^{s_i}$ once all the others are held fixed.
+Setting $\partial f/\partial M_i^{s_i} = 0$ at fixed neighbors, contracting away every tensor we
 are not currently varying (on both the bra and the ket side, together with the Hamiltonian MPO)
 collapses the entire, exponentially large problem down to a small effective eigenvalue equation
 living only on the local physical-times-bond-times-bond space at site $i$,
 \begin{equation}
-  H_{\mathrm{eff}}(i)\, A^{\sigma_i} = \lambda\, A^{\sigma_i}.
+  H_{\mathrm{eff}}(i)\, M_i^{s_i} = \lambda\, M_i^{s_i}.
 \end{equation}
-We diagonalize this small, dense matrix (its size is set by $D$, not by the full $2^L$-dimensional
-Hilbert space), keep the lowest eigenvector as the new $A^{\sigma_i}$, then move to site $i+1$,
+We diagonalize this small, dense matrix (its size is set by $\chi$, not by the full $2^L$-dimensional
+Hilbert space), keep the lowest eigenvector as the new $M_i^{s_i}$, then move to site $i+1$,
 rebuild its effective Hamiltonian using the freshly-updated tensor at $i$, and repeat. Sweeping all
 the way to the right end of the chain and back to the left, and iterating this back-and-forth sweep
 until the energy stops changing, is precisely the \textbf{density matrix renormalization group
 (DMRG)} algorithm: variational MPS optimization and DMRG are, in this sense, one and the same
-procedure, just derived from two different historical starting points.
+procedure, reached from two different starting points.
 
 \begin{figure}[H]
   \centering
@@ -595,11 +595,11 @@ procedure, just derived from two different historical starting points.
     (a) Acting with $\Ham$, drawn by joining the matrix product operator's column legs to the
     physical legs of the state one site at a time, with the state's legs drawn pointing up here so
     that the two chains stack. The two bond legs that now run in parallel merge into a single one
-    of dimension $D\cdot D_W$, so the result is again a matrix product state, just a fatter one,
-    and a singular value decomposition on every bond keeping the largest $D$ values compresses it
+    of dimension $\chi\chi_W$, so the result is again a matrix product state, just a fatter one,
+    and a singular value decomposition on every bond keeping the largest $\chi$ values compresses it
     back. (b) The variational ground-state search. Everything except the tensor at site $i$ is
     contracted into a left and a right environment, which collapses the exponentially large problem
-    to the small eigenvalue problem $H_{\mathrm{eff}}(i)A^{\sigma_i}=\lambda A^{\sigma_i}$ at that
+    to the small eigenvalue problem $H_{\mathrm{eff}}(i)M_i^{s_i}=\lambda M_i^{s_i}$ at that
     one site. Solving it, stepping one site over and repeating, back and forth along the chain, is
     the DMRG sweep.}
   \label{fig:mps-algorithm}
@@ -622,7 +622,7 @@ point itself. We will not develop either of these further in this course, but it
 they exist: MPS is the first, most tractable member of a much larger family of variational tensor
 architectures, each buying more entanglement capacity at the cost of a harder optimization problem.
 
-\section*{Summary}
+\section*{Closing summary}
 \begin{itemize}[nosep]
   \item The Jordan-Wigner mapping identifies the fermionic and spin-$\tfrac12$ local Hilbert spaces
     site by site, and fixes the resulting anticommutation/commutation mismatch with a string
@@ -630,10 +630,10 @@ architectures, each buying more entanglement capacity at the cost of a harder op
     exactly why 1D nearest-neighbor MPS methods are such a natural fit for fermionic chains.
   \item Mapping the fermionic Hamiltonian to its Jordan-Wigner spin image and solving it with MPS
     lets us redo Session 3's spinless CDW transition and Hubbard spin-charge separation at
-    $L\sim100$, sharp and unambiguous, rather than blurred by the $L\lesssim16$ ceiling of exact
-    diagonalization; the spinless chain's transition at $V_c\approx2t$ matches the exact XXZ result.
+    $L\sim100$, sharp and unambiguous, rather than blurred by the ceiling of exact diagonalization,
+    $L\sim20$ for spinless fermions and half that for the Hubbard chain; the spinless chain's transition at $V_c\approx2t$ matches the exact XXZ result.
   \item Nonlocal particle-particle correlators distinguish gapless (power-law) from gapped
-    (exponential) phases; pairing correlators, a genuinely new four-point diagnostic, show that
+    (exponential) phases; pairing correlators, a new four-point diagnostic, show that
     repulsive interactions quench Cooper-pair fluctuations while attractive interactions enhance
     them, in both the spinless and Hubbard models.
   \item The correlation matrix built from these correlators has eigenvalues in $[0,1]$ that are
@@ -649,9 +649,9 @@ architectures, each buying more entanglement capacity at the cost of a harder op
     respectively, beyond the scope of this course.
   \item Standing back over the whole course: mean-field theory (Session 1) gives us a cheap,
     polynomial-cost approximation that can fail qualitatively whenever the true ground state is
-    genuinely entangled; exact diagonalization (Sessions 2--3) fixes that failure completely but
+    entangled; exact diagonalization (Sessions 2 and 3) fixes that failure completely but
     only for small systems, since the Hilbert space grows exponentially; and matrix product states
-    (Sessions 4--5) recover the exact many-body answer, entanglement and all, at the large,
+    (Sessions 4 and 5) recover the exact many-body answer, entanglement and all, at the large,
     thermodynamically meaningful system sizes that make the underlying physics, phase transitions,
     fractionalization, spin-charge separation, unambiguous, at a cost that stays polynomial as long
     as the entanglement itself stays bounded. That progression, from product states, to unrestricted

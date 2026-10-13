@@ -16,11 +16,11 @@ diagonalizing directly in the spin basis. In this session we go back one step fu
 diagonalize the \emph{original} fermionic Hamiltonian exactly, working in the fermionic Fock space
 itself rather than first mapping onto spins. This is not just a change of language: it lets us see
 things a spin model simply cannot represent, charge physics, a real chemical potential, a genuine
-insulator-versus-metal distinction, and, most strikingly, a completely numerically exact test of
-Session 1's mean-field magnetization prediction. We will find that mean-field theory gets the
+insulator-versus-metal distinction, and a numerically exact test of Session 1's mean-field
+magnetization prediction. We will find that mean-field theory gets the
 Hubbard chain's magnetization qualitatively wrong, not just quantitatively wrong, which is exactly
 the kind of failure that motivates doing things exactly whenever we can afford to. We close by
-watching spin and charge decouple from each other as the interaction grows, a genuinely many-body
+watching spin and charge decouple from each other as the interaction grows, a many-body
 effect called spin-charge separation. Session 5 will pick this exact fermionic program back up and
 push it to far larger system sizes using tensor networks.
 
@@ -45,7 +45,7 @@ it costs polynomial time. The moment we add any quartic (interaction) term, that
 we have to diagonalize $\Ham$ in the full many-body Fock space, spanned by all the ways of
 distributing electrons among the $L$ orbitals, and that space grows exponentially in $L$.
 
-Let us count this explicitly, the same way the lecture does. Take two spinless sites, labeled $0$
+Let us count this explicitly, starting from the smallest case. Take two spinless sites, labeled $0$
 and $1$. The many-body basis has exactly four states,
 \begin{equation}
   \vac, \qquad \cre{0}\vac, \qquad \cre{1}\vac, \qquad \cre{0}\cre{1}\vac,
@@ -76,10 +76,10 @@ If the fermions carry spin, each site has \emph{four} local states, $\ket{0}$, $
 $\ket{\dn}$, $\ket{\up\dn}$, exactly as in Session 1. Equivalently, we can think of a spinful chain
 as $2L$ independent spinless orbitals (spin becomes just another orbital index), so the Fock space
 has dimension $2^{2L} = 4^L$: twice the exponent of the spinless case, since every site now
-contributes two binary choices instead of one. It is worth pausing on how this lines up with the
+contributes two binary choices instead of one. Note how this lines up with the
 spin chains of Session 2: an $L$-site spin-$\tfrac12$ chain also has a $2^L$-dimensional Hilbert
-space, exactly matching the spinless-fermion count. This is not a coincidence: a rigorous mapping
-(Jordan--Wigner, which we will meet properly in Session 5) sends spinless fermions to spin-$\tfrac12$
+space, exactly matching the spinless-fermion count. The reason for this is that a rigorous mapping
+(Jordan-Wigner, which we will meet properly in Session 5) sends spinless fermions to spin-$\tfrac12$
 degrees of freedom one-for-one. For now, the practical upshot is simply this:
 \begin{itemize}[nosep]
   \item solving an interacting \textbf{spinless} fermionic chain costs exactly as much as
@@ -100,7 +100,7 @@ Sections ``Creating a fermion\_chain object,'' ``Creating a Hamiltonian,'' ``Com
 state energy,'' and ``Computing expectation values.'' Build a small fermionic chain object, write
 down a many-body Hamiltonian directly in terms of the fermionic operators, and extract its ground
 state energy and a couple of expectation values. This is the fermionic analogue of what you did
-with spin operators in Session 2, and it is worth comparing the two interfaces side by side.
+with spin operators in Session 2, so compare the two interfaces side by side.
 \end{notebook}
 
 \section{The spinless-fermion model: a charge-density-wave transition, computed exactly}
@@ -158,17 +158,17 @@ $L=12$ to $L=14$, exactly as we would expect if it is destined to close in the t
 and leave behind a continuum. As $V$ grows, one particular excited state peels away from that
 continuum and drops steadily toward the ground state, becoming exactly degenerate with it as
 $V\to\infty$: this is the CDW partner state, and unlike the metallic gap, this near-degeneracy
-does \emph{not} close by adding more excited states underneath it; instead a genuinely large gap
+does \emph{not} close by adding more excited states underneath it; instead a large gap
 opens above the (now twofold) ground state, growing asymptotically as $\Delta \sim V$. That linear
 growth has a simple interpretation: at large $V$, the cheapest way to excite the system is to
 introduce a single domain wall into the alternating pattern, a local defect where the charge order
 runs into itself, and each domain wall costs an energy of order $V$ regardless of the size of the
 system, exactly the extensive, size-independent gap we see numerically.
 
-It is worth comparing this directly with Session 1's mean-field treatment of the very same model.
+Let us compare this directly with Session 1's mean-field treatment of the very same model.
 There, the self-consistent gap also opened continuously as $V$ increased and also grew linearly at
-large $V$, and here exact diagonalization confirms both of those features quantitatively. This is
-not an accident: the CDW breaks a \emph{discrete} symmetry (translation by one site, a $\mathbb Z_2$
+large $V$, and here exact diagonalization confirms both of those features quantitatively. The
+reason for this is that the CDW breaks a \emph{discrete} symmetry (translation by one site, a $\mathbb Z_2$
 symmetry), and discrete symmetry breaking of this kind is allowed even in a one-dimensional quantum
 system at zero temperature. Keep this in mind, because in Section~\ref{sec:hubbardmag} we will meet
 a case where mean-field theory tries to break a \emph{continuous} symmetry, and there the story
@@ -249,7 +249,7 @@ Now let us bring spin back and repeat this exercise for the Hubbard chain,
 which, just as in Eq.~\eqref{eq:cdw3}, differs from Session 1's Hubbard Hamiltonian only by the
 same bookkeeping shift, an automatic chemical potential that pins us at half filling.
 
-Here is the punchline, and it is worth sitting with: if we diagonalize $\Ham_{\mathrm{Hub}}$
+Now here is the puzzle: if we diagonalize $\Ham_{\mathrm{Hub}}$
 exactly and compute the local magnetization $m_i \equiv \expval{n_{i\up}} - \expval{n_{i\dn}}$ site
 by site, we find $m_i = 0$ \emph{identically}, on every site, for every $U$, no matter how strong
 the interaction is. This flatly contradicts what Session 1's mean-field theory told us to expect:
@@ -258,7 +258,7 @@ finite staggered moment, $m_i = (-1)^i m$ with $m$ growing toward saturation as 
 diagonalization and mean-field theory are not just quantitatively different here, they disagree
 about whether the ground state is magnetic at all.
 
-This is not a numerical fluke; it follows from an exact symmetry argument. The Hamiltonian
+The reason for this is an exact symmetry argument. The Hamiltonian
 Eq.~\eqref{eq:hub3} is invariant under any global spin rotation, so it commutes with the total spin
 operators, $[\Ham_{\mathrm{Hub}}, \vb S^2] = [\Ham_{\mathrm{Hub}}, S_z^{\mathrm{tot}}] = 0$, and its
 eigenstates can be labeled by a definite total spin $S$. \textbf{Lieb's theorem}
@@ -294,7 +294,7 @@ Even having done that, for the one-dimensional Heisenberg antiferromagnet that t
 to at large $U$ (Section~\ref{sec:heisrecover}), this limit still gives zero: one dimensional
 quantum antiferromagnets do not sustain true long-range magnetic order, only quasi-long-range,
 power-law spin correlations, which is exactly the gaplessness we will meet again in
-Section~\ref{sec:spincharge}. This is the deep reason mean-field theory fails so badly here: it is
+Section~\ref{sec:spincharge}. This is the reason mean-field theory fails so badly here: it is
 not just missing quantitative corrections, it is predicting an ordered phase that, in one
 dimension, does not exist.
 
@@ -324,7 +324,7 @@ continuous Hubbard magnetization badly wrong.
 
 \begin{notebook}
 Sections ``Magnetization of an interacting Hubbard model'' and ``Magnetization of a Hubbard model
-with stagger magnetization.'' First confirm $m_i=0$ at every site of the exact Hubbard ground
+with staggered magnetization.'' First confirm $m_i=0$ at every site of the exact Hubbard ground
 state, however large $U$ is. Then switch on the staggered field of Eq.~\eqref{eq:stagger} and watch
 $m$ grow smoothly from zero, and check how the field strength needed to saturate $m$ changes as you
 increase $U$.
@@ -359,7 +359,7 @@ $\ket{a}$ and $\ket{c}$ are already exact eigenstates,
 \begin{equation}
   \Ham_{\mathrm{Hub}}\ket{a} = 0\cdot\ket{a}, \qquad \Ham_{\mathrm{Hub}}\ket{c} = U\ket{c},
 \end{equation}
-while $\ket{b}$ and $\ket{d}$ mix into a genuine $2\times2$ block,
+while $\ket{b}$ and $\ket{d}$ mix into a $2\times2$ block,
 \begin{equation}
   \Ham_{\mathrm{Hub}}\big|_{\{b,d\}} = \begin{pmatrix} 0 & -2t \\ -2t & U\end{pmatrix}
   \;\Longrightarrow\;
@@ -380,7 +380,7 @@ which reproduces, from a completely independent, exact calculation, not just the
 but the exact same numerical prefactor that Session 1 obtained perturbatively for the effective
 coupling $J=4t^2/U$ of $\Ham_{\mathrm{eff}} = J\,\vb S_1\cdot\vb S_2$: expanding
 Eq.~\eqref{eq:exactgap} to leading order in $t/U$ gives $\Delta_{\mathrm{s-t}}\to4t^2/U$, digit for
-digit. This is a genuinely satisfying check: two completely different techniques, one perturbative
+digit. This is a satisfying check: two completely different techniques, one perturbative
 and spin-only, one exact and fermionic, land on exactly the same physics, not just the same scaling.
 
 \paragraph{Excitations as magnons.} We can probe the excited states further, exactly as in Session
@@ -505,7 +505,7 @@ lineshapes, then track how the leading peak of each one moves as you scan $U$, c
 linear-growth-versus-$1/U$-decay contrast that defines spin-charge separation.
 \end{notebook}
 
-\section*{Summary}
+\section*{Closing summary}
 \begin{itemize}[nosep]
   \item Exact diagonalization directly in the fermionic Fock space costs $2^L$ (spinless) or $4^L$
     (spinful) in Hilbert space dimension, exactly matching the $2^L$ cost of the equivalent spin
@@ -530,8 +530,9 @@ linear-growth-versus-$1/U$-decay contrast that defines spin-charge separation.
     gapped, with a gap growing linearly in $U$ and exponentially decaying nonlocal correlators,
     while the spin sector stays gapless, with a spin gap shrinking as $1/U$ and power-law
     correlators, exactly the physics of the Heisenberg chain it maps onto.
-  \item All of this was limited to $L\lesssim 15$-ish sites by the $2^L$/$4^L$ wall. Session 5
-    returns to this same fermionic program, via the Jordan--Wigner mapping and tensor-network
+  \item All of this was limited by the $2^L$ and $4^L$ wall, to $L\sim20$ sites for spinless fermions
+    and about half that for the Hubbard chain. Session 5 returns to this same fermionic program, via
+    the Jordan-Wigner mapping and tensor-network
     methods, and pushes it to system sizes where the thermodynamic limit becomes directly visible.
 \end{itemize}
 
